@@ -4,8 +4,8 @@ import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Products from "../views/products/Products.vue";
 import Users from "../views/users/Users.vue";
-//import Customers from "../views/Customers/Customers.vue";
-//import CustomerView from "../views/Customers/CustomerView.vue";
+import Customers from "../views/customers/Customers.vue";
+import CustomerView from "../views/customers/CustomerView.vue";
 import Orders from "../views/orders/Orders.vue";
 import OrderView from "../views/orders/OrderView.vue";
 import RequestPassword from "../views/RequestPassword.vue";
@@ -13,8 +13,8 @@ import ResetPassword from "../views/ResetPassword.vue";
 import NotFound from "../views/NotFound.vue";
 import { useUserStore } from "../store";
 import Report from "../views/reports/Report.vue";
-//import OrdersReport from "../views/Reports/OrdersReport.vue";
-//import CustomersReport from "../views/Reports/CustomersReport.vue";
+import OrdersReport from "../views/reports/OrdersReport.vue";
+import CustomersReport from "../views/reports/CustomersReport.vue";
 
 const router = createRouter({
   history: createWebHistory(),
