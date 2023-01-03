@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import AppLayout from '../components/AppLayout.vue'
+import AppLayout from "../components/AppLayout.vue";
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Products from "../views/products/Products.vue";
@@ -20,69 +20,69 @@ const router = createRouter({
   history: createWebHistory(),
   routes:[
     {
-      path: '/',
-      redirect: '/app'
+      path: "/",
+      redirect: "/app"
     },
     {
-      path: '/app',
-      name: 'app',
-      redirect: '/app/dashboard',
+      path: "/app",
+      name: "app",
+      redirect: "/app/dashboard",
       component: AppLayout,
       meta: {
         requiresAuth: true
       },
       children: [
         {
-          path: 'dashboard',
-          name: 'app.dashboard',
+          path: "dashboard",
+          name: "app.dashboard",
           component: Dashboard
         },
         {
-          path: 'products',
-          name: 'app.products',
+          path: "products",
+          name: "app.products",
           component: Products
         },
         {
-          path: 'users',
-          name: 'app.users',
+          path: "users",
+          name: "app.users",
           component: Users
         },
         {
-          path: 'customers',
-          name: 'app.customers',
+          path: "customers",
+          name: "app.customers",
           component: Customers
         },
         {
-          path: 'customers/:id',
-          name: 'app.customers.view',
+          path: "customers/:id",
+          name: "app.customers.view",
           component: CustomerView
         },
         {
-          path: 'orders',
-          name: 'app.orders',
+          path: "orders",
+          name: "app.orders",
           component: Orders
         },
         {
-          path: 'orders/:id',
-          name: 'app.orders.view',
+          path: "orders/:id",
+          name: "app.orders.view",
           component: OrderView
         },
         {
-          path: '/report',
-          name: 'reports',
+          path: "/report",
+          name: "reports",
           component: Report,
           meta: {
             requiresAuth: true
           },
           children: [
             {
-              path: 'orders/:date?',
-              name: 'reports.orders',
+              path: "orders/:date?",
+              name: "reports.orders",
               component: OrdersReport
             },
             {
-              path: 'customers/:date?',
-              name: 'reports.customers',
+              path: "customers/:date?",
+              name: "reports.customers",
               component: CustomersReport
             }
           ]
@@ -90,32 +90,32 @@ const router = createRouter({
       ]
     },
     {
-      path: '/login',
-      name: 'login',
+      path: "/login",
+      name: "login",
       component: Login,
       meta: {
         requiresGuest: true
       }
     },
     {
-      path: '/request-password',
-      name: 'requestPassword',
+      path: "/request-password",
+      name: "requestPassword",
       component: RequestPassword,
       meta: {
         requiresGuest: true
       }
     },
     {
-      path: '/reset-password/:token',
-      name: 'resetPassword',
+      path: "/reset-password/:token",
+      name: "resetPassword",
       component: ResetPassword,
       meta: {
         requiresGuest: true
       }
     },
     {
-      path: '/:pathMatch(.*)',
-      name: 'notfound',
+      path: "/:pathMatch(.*)",
+      name: "notfound",
       component: NotFound,
     }
   ]
@@ -123,9 +123,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !useUserStore().user.token) {
-    next({name: 'login'})
+    next({name: "login"})
   } else if (to.meta.requiresGuest && useUserStore().user.token) {
-    next({name: 'app.dashboard'})
+    next({name: "app.dashboard"})
   } else {
     next();
   }

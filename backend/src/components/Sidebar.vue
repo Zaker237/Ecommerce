@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {HomeIcon, UserGroupIcon, UsersIcon, ViewListIcon, ChartBarIcon} from '@heroicons/vue/outline'
+import {HomeIcon, UserGroupIcon, UsersIcon, QueueListIcon, ChartBarIcon} from '@heroicons/vue/24/outline'
 </script>
 
 <template>
@@ -16,7 +16,7 @@ import {HomeIcon, UserGroupIcon, UsersIcon, ViewListIcon, ChartBarIcon} from '@h
     <router-link :to="{name: 'app.products'}"
                  class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
-        <ViewListIcon class="w-5"/>
+        <QueueListIcon class="w-5"/>
       </span>
       <span class="text-xs">
         Products
@@ -25,7 +25,7 @@ import {HomeIcon, UserGroupIcon, UsersIcon, ViewListIcon, ChartBarIcon} from '@h
     <router-link :to="{name: 'app.orders'}"
                  class="flex items-center p-2 rounded transition-colors hover:bg-black/30">
       <span class="mr-2 text-gray-300">
-        <ViewListIcon class="w-5"/>
+        <QueueListIcon class="w-5"/>
       </span>
       <span class="text-xs">
         Orders

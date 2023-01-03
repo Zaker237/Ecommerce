@@ -7,7 +7,7 @@ export const useUserStore = defineStore({
     name: 'Eduardo',
     isAdmin: true,
     theUser: {
-      token: null
+      token: "jbfkj"
     }
   }),
 
