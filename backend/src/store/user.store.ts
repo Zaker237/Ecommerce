@@ -6,7 +6,14 @@ export const useUserStore = defineStore({
   state: () => ({
     name: 'Eduardo',
     isAdmin: true,
+    theUser: {
+      token: null
+    }
   }),
+
+  getters: {
+    user: (state) => state.theUser
+  },
 
   actions: {
     logout() {
