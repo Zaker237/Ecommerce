@@ -2,17 +2,17 @@ import { createRouter, createWebHistory } from "vue-router";
 import AppLayout from '../components/AppLayout.vue'
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
-//import Products from "../views/Products/Products.vue";
-//import Users from "../views/Users/Users.vue";
+import Products from "../views/products/Products.vue";
+import Users from "../views/users/Users.vue";
 //import Customers from "../views/Customers/Customers.vue";
 //import CustomerView from "../views/Customers/CustomerView.vue";
-//import Orders from "../views/Orders/Orders.vue";
-//import OrderView from "../views/Orders/OrderView.vue";
+import Orders from "../views/orders/Orders.vue";
+import OrderView from "../views/orders/OrderView.vue";
 import RequestPassword from "../views/RequestPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import NotFound from "../views/NotFound.vue";
 import { useUserStore } from "../store";
-import Report from "../views/Reports/Report.vue";
+import Report from "../views/reports/Report.vue";
 //import OrdersReport from "../views/Reports/OrdersReport.vue";
 //import CustomersReport from "../views/Reports/CustomersReport.vue";
 
