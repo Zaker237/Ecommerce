@@ -1,8 +1,9 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
-  <router-view></router-view>
+	<div>Dasboard</div>
 </template>
 
 <style scoped>
