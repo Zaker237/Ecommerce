@@ -16,6 +16,12 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if (Auth::user() && Auth::user()->is_admin == 1) {
+            return $next($request);
+        }
+
+        return response([
+            'message' => 'You don\'t have the permission to perform this action'
+        ], 403);
     }
 }
