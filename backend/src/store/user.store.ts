@@ -17,7 +17,7 @@ export const useUserStore = defineStore({
   getters: {
     user: (state) => state.sUser,
     token: (state) => state.sToken,
-    sIsAdmin: (state) => state.sIsAdmin
+    isAdmin: (state) => state.sIsAdmin
   },
 
   actions: {
@@ -32,7 +32,8 @@ export const useUserStore = defineStore({
 							"Content-Type": "application/json"
 						},
 					},
-				);
+        );
+        console.log(data);
         this.sToken = data.token;
         this.sUser = data.user;
         sessionStorage.setItem("TOKEN", data.token);
