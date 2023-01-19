@@ -51,7 +51,7 @@ export const useUserStore = defineStore({
     async logout() {
       this.loading = true;
 			try {
-				const { data, status } = await axios.get(
+				const { data, status } = await axios.post(
           `${API_BASE_URL}/logout`,
 					{
 						headers: {

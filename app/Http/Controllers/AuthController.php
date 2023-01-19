@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,7 @@ class AuthController extends Controller
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
 
-        if(!Auth::attempt([$credentials, $remember])){
+        if(!Auth::attempt($credentials, $remember)){
             return response([
                 'message' => "Email or password is incorrect"
             ], 422);
@@ -34,7 +35,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('main')->plainTextToken;
         return response([
-            'user' => new UserRessource($user),
+            'user' => new UserResource($user),
             'token' => $token
         ]);
     }
