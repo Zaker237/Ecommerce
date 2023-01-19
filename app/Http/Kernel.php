@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Middleware\Admin;
+use App\Http\Middleware\Admin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
