@@ -2,6 +2,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { IProduct, GetProductResponse, RootProductState } from "../types/product";
 import axios from "axios";
+import { useUserStore } from "./user.store";
 const BASE_ENDPOINT = import.meta.env.VITE_API_BASE_URL;
 
 export const useProductStore = defineStore({
@@ -40,6 +41,29 @@ export const useProductStore = defineStore({
 			}
 		},
 
+		async getItem(id: number) {
+			this.loading = true;
+			try {
+				const { data, status } = await axios.get<GetProductResponse>(
+					BASE_ENDPOINT + `/products/${id}`,
+					{
+						headers: {
+							"Content-Type": "application/json"
+						},
+					},
+				);
+				this.products = data.data;
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					this.error = error.message;
+				} else {
+					this.error = "An unexpected error occurred";
+				}
+			} finally {
+				this.loading = false;
+			}
+		},
+
 		async addItem(product: IProduct) {
 			this.loading = true;
 			try {
@@ -48,7 +72,8 @@ export const useProductStore = defineStore({
 					{...product},
 					{
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${useUserStore().token}`
 						},
 
 					},
@@ -75,7 +100,8 @@ export const useProductStore = defineStore({
 					{ ...newProduct },
 					{
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${useUserStore().token}`
 						},
 					},
 				);
@@ -103,7 +129,8 @@ export const useProductStore = defineStore({
 					BASE_ENDPOINT + `products/${id}`,
 					{
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${useUserStore().token}`
 						},
 					},
 				);
