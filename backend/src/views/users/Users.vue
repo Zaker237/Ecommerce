@@ -1,3 +1,3 @@
 <script setup lang="ts"></script>
-<template></template>
+<template>Users</template>
 <style scoped></style>
