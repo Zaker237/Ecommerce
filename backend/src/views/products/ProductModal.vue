@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, onUpdated, ref } from "vue";
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
-import { IProduct } from "../../types/product.ts";
+// import { IProduct } from "../../types/product";
 import { ExclamationIcon } from "@heroicons/vue/outline";
 import CustomInput from "../../components/core/CustomInput.vue";
-import useProductStore from "../../store/product.store.ts";
+import { useProductStore } from "../../store/product.store.ts";
 import Spinner from "../../components/core/Spinner.vue";
 
 const productStore = useProductStore();
@@ -13,7 +13,7 @@ const props = defineProps({
   modelValue: Boolean,
   product: {
     required: true,
-    type: IProduct,
+    type: Object,
   }
 })
 const emit = defineEmits(["update:modelValue", "close"])

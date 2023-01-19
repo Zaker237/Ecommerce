@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import store from "../../store";
 import ProductModal from "./ProductModal.vue";
 import ProductsTable from "./ProductsTable.vue";
-import useProductStore from "../../store/product.store.ts";
+import { useProductStore } from "../../store/product.store.ts";
 
 const productStore = useProductStore();
 

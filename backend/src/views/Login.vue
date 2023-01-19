@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { LockClosedIcon } from "@heroicons/vue/solid";
+import { LockClosedIcon } from "@heroicons/vue/24/solid";
 import GuestLayout from "../components/GuestLayout.vue";
-import { useUserStore } from "../../store";
+import { useUserStore } from "../store/user.store";
 import router from "../router";
 
 const userStore = useUserStore();
@@ -14,10 +14,10 @@ const user = {
     password: "",
     remember: false,
 };
-login = () => {
+
+const login = () => {
     loading.value = true;
-    userStore
-        .login(user)
+    userStore.login(user)
         .then(() => {
             loading.value = false;
             router.push({ name: "app.dashboard" });
