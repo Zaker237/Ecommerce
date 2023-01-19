@@ -3,7 +3,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { IProduct, GetProductResponse, RootProductState } from "../types/product";
 import axios from "axios";
 import { useUserStore } from "./user.store";
-const BASE_ENDPOINT = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const useProductStore = defineStore({
 	id: "products",
@@ -22,7 +22,7 @@ export const useProductStore = defineStore({
 			this.loading = true;
 			try {
 				const { data, status } = await axios.get<GetProductResponse>(
-					BASE_ENDPOINT + "/products",
+					`${API_BASE_URL}/products`,
 					{
 						headers: {
 							"Content-Type": "application/json"
@@ -45,7 +45,7 @@ export const useProductStore = defineStore({
 			this.loading = true;
 			try {
 				const { data, status } = await axios.get<GetProductResponse>(
-					BASE_ENDPOINT + `/products/${id}`,
+					`${API_BASE_URL}/products/${id}`,
 					{
 						headers: {
 							"Content-Type": "application/json"
@@ -68,7 +68,7 @@ export const useProductStore = defineStore({
 			this.loading = true;
 			try {
 				const { data, status } = await axios.post<IProduct>(
-					BASE_ENDPOINT + "/products",
+					`${API_BASE_URL}/products`,
 					{...product},
 					{
 						headers: {
@@ -96,7 +96,7 @@ export const useProductStore = defineStore({
 			this.loading = true;
 			try {
 				const { data, status } = await axios.put<IProduct>(
-					BASE_ENDPOINT + `products/${newProduct.id}`,
+					`${API_BASE_URL}/products/${newProduct.id}`,
 					{ ...newProduct },
 					{
 						headers: {
@@ -126,7 +126,7 @@ export const useProductStore = defineStore({
 			this.loading = true;
 			try {
 				const { data, status } = await axios.delete<IProduct>(
-					BASE_ENDPOINT + `products/${id}`,
+					`${API_BASE_URL}/products/${id}`,
 					{
 						headers: {
 							"Content-Type": "application/json",

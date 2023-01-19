@@ -25,7 +25,7 @@ export const useUserStore = defineStore({
       this.loading = true;
 			try {
 				const { data, status } = await axios.post<ILoginResponse>(
-          API_BASE_URL + "/login",
+          `${API_BASE_URL}/login`,
           {...user},
 					{
 						headers: {
@@ -52,7 +52,7 @@ export const useUserStore = defineStore({
       this.loading = true;
 			try {
 				const { data, status } = await axios.get(
-          API_BASE_URL + "/logout",
+          `${API_BASE_URL}/logout`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -78,7 +78,7 @@ export const useUserStore = defineStore({
       this.loading = true;
 			try {
 				const { data, status } = await axios.get(
-          API_BASE_URL + "/user",
+          `${API_BASE_URL}/user`,
 					{
 						headers: {
 							"Content-Type": "application/json",
