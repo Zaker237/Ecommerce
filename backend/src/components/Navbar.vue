@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import {Bars3Icon, ArrowDownOnSquareIcon, UserIcon} from '@heroicons/vue/24/outline'
-import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/vue'
-import {ChevronDownIcon} from '@heroicons/vue/24/solid'
+import { Bars3Icon, ArrowDownOnSquareIcon, UserIcon } from "@heroicons/vue/24/outline";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { ChevronDownIcon } from "@heroicons/vue/24/solid";
+import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "../store";
+
+const userStore = useUserStore();
+const router = useRouter();
+
+const logout = async () => {
+  await userStore.logout();
+  await router.push({name: "app"});
+}
 </script>
 
 <template>
@@ -13,7 +23,7 @@ import {ChevronDownIcon} from '@heroicons/vue/24/solid'
     <Menu as="div" class="relative inline-block text-left">
       <MenuButton class="flex items-center">
         <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">
-        <small>{{ 'alex' }}</small>
+        <small>{{ "alex" }}</small>
         <ChevronDownIcon
           class="h-5 w-5 text-violet-200 hover:text-violet-100"
           aria-hidden="true"
@@ -53,6 +63,7 @@ import {ChevronDownIcon} from '@heroicons/vue/24/solid'
                   active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
+                @click="logout"
               >
                 <ArrowDownOnSquareIcon
                   :active="active"

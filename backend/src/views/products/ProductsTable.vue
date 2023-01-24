@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { useProductStore } from "../../store/product.store.ts";
+import { useProductStore } from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
 import { PRODUCTS_PER_PAGE } from "../../constants";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
@@ -13,7 +13,9 @@ const productStore = useProductStore();
 const perPage = ref(PRODUCTS_PER_PAGE);
 const search = ref('');
 const products = computed(() => productStore.items);
-const sortField = ref("updated_at");
+const productsLoading = computed(() => productStore.loading);
+const productsLinks = computed(() => productStore.links);
+const productsMeta = computed(() => productStore.meta);
 const sortDirection = ref("desc");
 const product = ref({});
 const showProductModal = ref(false);
@@ -161,7 +163,7 @@ const editProduct = (p) => {
       </tbody>
       <tbody v-else>
       <tr
-				v-for="(product, index) of products.data"
+				v-for="(product, index) of products"
 				class="animate-fade-in-down"
         :style="{'animation-delay': (index * 0.1) + 's'}"
 			>
@@ -244,20 +246,20 @@ const editProduct = (p) => {
       </tbody>
     </table>
 
-    <div v-if="!products.loading" class="flex justify-between items-center mt-5">
-      <div v-if="products.data.length">
-        Showing from {{ products.from }} to {{ products.to }}
+    <div v-if="!productsLoading" class="flex justify-between items-center mt-5">
+      <div v-if="products.length">
+        Showing from {{ productsMeta.from}} to {{ productsMeta.to }}
       </div>
       <nav
-        v-if="products.total > products.limit"
+        v-if="productsMeta.total > productsMeta.limit"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >
         <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
         <a
-          v-for="(link, i) of products.links"
+          v-for="(link, i) of productsLinks"
           :key="i"
-          :disabled="!link.url"
+          :disabled="!link?.url"
           href="#"
           @click="getForPage($event, link)"
           aria-current="page"

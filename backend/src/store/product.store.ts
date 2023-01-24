@@ -9,6 +9,8 @@ export const useProductStore = defineStore({
 	id: "products",
 	state: () => ({
 		products: [],
+		links: {},
+  		meta: [],
 		loading: false,
 		error: null
 	} as RootProductState),
@@ -30,6 +32,8 @@ export const useProductStore = defineStore({
 					},
 				);
 				this.products = data.data;
+				this.links = data.links;
+				this.meta = data.meta;
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					this.error = error.message;

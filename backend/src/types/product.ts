@@ -1,3 +1,4 @@
+import { ILink, IMeta} from "./commons";
 
 export interface IProduct {
   id: number | null;
@@ -23,16 +24,20 @@ export interface ProductProps {
 
 export type GetProductResponse = {
   data: IProduct[];
-  status: number
+  links: ILink;
+  meta: IMeta;
 };
 
 export type GetProductListResponse = {
   data: IProductList[];
-  status: number
+  links: ILink;
+  meta: IMeta;
 };
 
 export type RootProductState = {
   products: IProduct[];
+  links: ILink;
+  meta: IMeta;
   loading: boolean,
   error: null | string
 };

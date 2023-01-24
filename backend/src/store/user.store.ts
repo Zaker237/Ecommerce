@@ -2,7 +2,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { IUser, IUserLogin, ILoginResponse, RootUserState } from "../types/user";
 import axios from "axios";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = "http://localhost:8000/api"; //import.meta.env.VITE_API_BASE_URL;
 
 export const useUserStore = defineStore({
   id: 'users',
@@ -53,10 +53,11 @@ export const useUserStore = defineStore({
 			try {
 				const { data, status } = await axios.post(
           `${API_BASE_URL}/logout`,
+					{},
 					{
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${useUserStore().token}`
+							"Authorization": `Bearer ${this.token}`
 						},
 					},
 				);

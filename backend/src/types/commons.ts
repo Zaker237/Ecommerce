@@ -18,6 +18,6 @@ export interface IMeta {
 	links?: IMetaLink[];
 	path?: string | null;
 	per_page?: number;
-  to?: string | null;
-  total?: number;
+  	to?: string | null;
+ 	total?: number;
 }
