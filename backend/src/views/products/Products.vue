@@ -19,19 +19,17 @@ const productModel = ref({...DEFAULT_PRODUCT})
 const showProductModal = ref(false);
 
 onMounted(async () => {
-  await productStore.getItems();
+  await productStore.getItems({});
 });
 
 const showAddNewModal = () => {
   showProductModal.value = true
 }
-const editProduct = (p: IProduct) => {
-  console.log(p)
-  /*productStore.getItem(p.id)
-    .then(({data}) => {
-      productModel.value = data
-      showAddNewModal();
-    })*/
+
+const editProduct = async (p: IProduct) => {
+  const prod = await productStore.getItem(p.id);
+  productModel.value = prod;
+  showAddNewModal();
 }
 
 const onModalClose = () => {
