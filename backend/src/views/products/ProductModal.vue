@@ -15,7 +15,8 @@ const props = defineProps({
     required: true,
     type: Object,
   }
-})
+});
+
 const emit = defineEmits(["update:modelValue", "close"])
 
 const product = ref({
@@ -24,12 +25,15 @@ const product = ref({
   image: props.product.image,
   description: props.product.description,
   price: props.product.price
-})
-const loading = ref(false)
+});
+
+const loading = ref(false);
+
 const show = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value)
-})
+});
+
 onUpdated(() => {
   product.value = {
     id: props.product.id,
@@ -38,34 +42,21 @@ onUpdated(() => {
     description: props.product.description,
     price: props.product.price
   }
-})
+});
+
 const closeModal = () => {
   show.value = false
   emit("close")
 }
 
-const onSubmit = () => {
+const onSubmit = async () => {
   loading.value = true
   if (product.value.id) {
-    productStore.updateItem(product.value)
-      .then(response => {
-        loading.value = false;
-        if (response.status === 200) {
-          closeModal()
-        }
-      })
+    await productStore.updateItem(product.value);
+    closeModal();
   } else {
-    productStore.addItem(product.value)
-      .then(response => {
-        loading.value = false;
-        if (response.status === 201) {
-          closeModal()
-        }
-      })
-      .catch(err => {
-        loading.value = false;
-        debugger;
-      })
+    await productStore.addItem(product.value);
+    closeModal();
   }
 }
 </script>
