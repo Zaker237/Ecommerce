@@ -1,36 +1,40 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, Ref } from "vue";
 import { useProductStore } from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
-import { PRODUCTS_PER_PAGE } from "../../constants";
+import ProductModal from "./ProductModal.vue";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
+import { IProduct } from "../../types/product";
+import { ILink, IMetaLink } from "../../types/commons";
+import { PRODUCTS_PER_PAGE } from "../../constants";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { DocumentPlusIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
-import ProductModal from "./ProductModal.vue";
 
 const productStore = useProductStore();
 
-const perPage = ref(PRODUCTS_PER_PAGE);
-const search = ref('');
+const perPage: Ref<number> = ref(PRODUCTS_PER_PAGE);
+const search: Ref<string> = ref('');
 const products = computed(() => productStore.items);
 const productsLoading = computed(() => productStore.loading);
 const productsLinks = computed(() => productStore.links);
 const productsMeta = computed(() => productStore.meta);
-const sortDirection = ref("desc");
+const sortField: Ref<string> = ref('updated_at');
+const sortDirection: Ref<string> = ref("desc");
 const product = ref({});
-const showProductModal = ref(false);
+const showProductModal: Ref<boolean> = ref(false);
 const emit = defineEmits(["clickEdit"]);
 
 onMounted(() => {
-  productStore.getItems();
+  productStore.getItems({});
 })
 
-const getForPage = (ev, link) => {
+const getForPage = (ev: any, link: IMetaLink) => {
   ev.preventDefault();
   if (!link.url || link.active) {
     return;
+  }else{
+    productStore.getItems({url: link.url})
   }
-  productStore.getItems(link.url)
 }
 
 const getProducts = (url = null) => {
@@ -43,7 +47,7 @@ const getProducts = (url = null) => {
   });
 }
 
-const sortProducts = (field) => {
+const sortProducts = (field: string) => {
   if (field === sortField.value) {
     if (sortDirection.value === "desc") {
       sortDirection.value = "asc"
@@ -61,18 +65,18 @@ const showAddNewModal = () => {
   showProductModal.value = true
 }
 
-const deleteProduct = (product) => {
+const deleteProduct = (product: IProduct) => {
   if (!confirm(`Are you sure you want to delete the product?`)) {
     return
   }
-  store.dispatch("deleteProduct", product.id)
-    .then(res => {
-      // TODO Show notification
-      store.dispatch("getProducts")
-    })
+  if (product.id){
+    productStore.removeItem(product.id);
+  }else{
+    return;
+  }
 }
 
-const editProduct = (p) => {
+const editProduct = (p: IProduct) => {
   emit("clickEdit", p)
 }
 </script>
@@ -93,7 +97,7 @@ const editProduct = (p) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{products.total}} products</span>
+        <span class="ml-3">Found {{productsMeta.total}} products</span>
       </div>
       <div>
         <input
@@ -151,10 +155,10 @@ const editProduct = (p) => {
         </TableHeaderCell>
       </tr>
       </thead>
-      <tbody v-if="products.loading || !products.data.length">
+      <tbody v-if="productsLoading || !products.length">
       <tr>
         <td colspan="6">
-          <Spinner v-if="products.loading"/>
+          <Spinner v-if="productsLoading"/>
           <p v-else class="text-center py-8 text-gray-700">
             There are no products
           </p>
@@ -251,15 +255,15 @@ const editProduct = (p) => {
         Showing from {{ productsMeta.from}} to {{ productsMeta.to }}
       </div>
       <nav
-        v-if="productsMeta.total > productsMeta.limit"
+        v-if="productsMeta.total && productsMeta.per_page && productsMeta?.total > productsMeta.per_page"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >
         <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
         <a
-          v-for="(link, i) of productsLinks"
+          v-for="(link, i) in productsMeta.links"
           :key="i"
-          :disabled="!link?.url"
+          :disabled="!link.url"
           href="#"
           @click="getForPage($event, link)"
           aria-current="page"
@@ -269,7 +273,7 @@ const editProduct = (p) => {
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md' : '',
-              i === products.links.length - 1 ? 'rounded-r-md' : '',
+              productsMeta.links && i === productsMeta.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
           v-html="link.label"
