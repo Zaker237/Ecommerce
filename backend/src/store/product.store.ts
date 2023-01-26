@@ -1,16 +1,17 @@
 // @ts-check
 import { defineStore, acceptHMRUpdate } from "pinia";
-import { IProduct, GetProductResponse, RootProductState } from "../types/product";
+import { IProduct, GetProductResponse, RootProductState, GetProductsParams } from "../types/product";
 import axios from "axios";
 import { useUserStore } from "./user.store";
+import { PRODUCTS_PER_PAGE } from "../constants";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const useProductStore = defineStore({
 	id: "products",
 	state: () => ({
 		products: [],
-		links: {},
-  		meta: [],
+		links: [],
+  	meta: [],
 		loading: false,
 		error: null
 	} as RootProductState),
@@ -20,12 +21,15 @@ export const useProductStore = defineStore({
 	},
 
 	actions: {
-		async getItems() {
+		async getItems(configs: GetProductsParams) {
 			this.loading = true;
+			const url = configs.url || `${API_BASE_URL}/products`;
+      const params = {per_page: PRODUCTS_PER_PAGE, ...configs};
 			try {
 				const { data, status } = await axios.get<GetProductResponse>(
-					`${API_BASE_URL}/products`,
+					url,
 					{
+						params: { ...params },
 						headers: {
 							"Content-Type": "application/json"
 						},
@@ -126,7 +130,7 @@ export const useProductStore = defineStore({
 			}
 		},
 
-		async removeItem(id: number) {
+		async removeItem(id: number ) {
 			this.loading = true;
 			try {
 				const { data, status } = await axios.delete<IProduct>(
