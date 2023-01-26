@@ -22,8 +22,14 @@ export interface ProductProps {
   product: IProduct
 }
 
-export type GetProductResponse = {
+export type GetProductsResponse = {
   data: IProduct[];
+  links: ILink;
+  meta: IMeta;
+};
+
+export type GetProductResponse = {
+  data: IProduct;
   links: ILink;
   meta: IMeta;
 };
