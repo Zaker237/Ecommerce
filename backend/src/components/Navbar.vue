@@ -9,8 +9,14 @@ const userStore = useUserStore();
 const router = useRouter();
 
 const logout = async () => {
-  await userStore.logout();
-  await router.push({name: "app"});
+  try{
+    await userStore.logout();
+    await router.push({name: "app"});
+    console.log("logout");
+  }
+  catch(error) {
+    console.log(error);
+  }
 }
 </script>
 

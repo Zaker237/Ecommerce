@@ -33,7 +33,6 @@ export const useUserStore = defineStore({
 						},
 					},
         );
-        console.log(data);
         this.sToken = data.token;
         this.sUser = data.user;
         sessionStorage.setItem("TOKEN", data.token);
