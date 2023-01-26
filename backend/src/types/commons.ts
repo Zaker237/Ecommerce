@@ -5,10 +5,10 @@ export interface ILink {
 	next?: string | null;
 }
 
-interface IMetaLink {
-	url: null | string;
-	label: string | null;
-	active: boolean | null;
+export interface IMetaLink {
+	url?: string;
+	label?: string;
+	active?: boolean;
 }
 
 export interface IMeta {
@@ -18,6 +18,6 @@ export interface IMeta {
 	links?: IMetaLink[];
 	path?: string | null;
 	per_page?: number;
-  	to?: string | null;
+  to?: string | null;
  	total?: number;
 }

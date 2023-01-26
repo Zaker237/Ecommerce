@@ -5,7 +5,7 @@ export interface IProduct {
   title: string;
 	slug: string;
 	description: string | null;
-  image_url: string | null;
+  image_url?: string;
   price: number;
   created_at: string | null;
   updated_at: string | null;
@@ -40,4 +40,12 @@ export type RootProductState = {
   meta: IMeta;
   loading: boolean,
   error: null | string
+};
+
+export type GetProductsParams = {
+  url?: string | null;
+  search?: string;
+  per_page?: number;
+  sort_field?: string;
+  sort_direction?: string
 };
