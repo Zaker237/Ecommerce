@@ -1,6 +1,6 @@
 // @ts-check
 import { defineStore, acceptHMRUpdate } from "pinia";
-import { IProduct, GetProductResponse, RootProductState, GetProductsParams } from "../types/product";
+import { IProduct, GetProductsResponse, RootProductState, GetProductsParams } from "../types/product";
 import axios from "axios";
 import { useUserStore } from "./user.store";
 import { PRODUCTS_PER_PAGE } from "../constants";
@@ -23,15 +23,16 @@ export const useProductStore = defineStore({
 	actions: {
 		async getItems(configs: GetProductsParams) {
 			this.loading = true;
-			const url = configs.url || `${API_BASE_URL}/products`;
+			const url = configs.url? configs.url : `${API_BASE_URL}/products`;
       const params = {per_page: PRODUCTS_PER_PAGE, ...configs};
 			try {
-				const { data, status } = await axios.get<GetProductResponse>(
+				const { data, status } = await axios.get<GetProductsResponse>(
 					url,
 					{
 						params: { ...params },
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${useUserStore().token}`
 						},
 					},
 				);
@@ -52,21 +53,24 @@ export const useProductStore = defineStore({
 		async getItem(id: number) {
 			this.loading = true;
 			try {
-				const { data, status } = await axios.get<GetProductResponse>(
+				const { data, status } = await axios.get<IProduct>(
 					`${API_BASE_URL}/products/${id}`,
 					{
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${useUserStore().token}`
 						},
 					},
 				);
-				this.products = data.data;
+
+				return data;
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					this.error = error.message;
 				} else {
 					this.error = "An unexpected error occurred";
 				}
+				return {}
 			} finally {
 				this.loading = false;
 			}
