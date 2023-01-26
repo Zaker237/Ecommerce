@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const {field, sortField, sortDirection} = defineProps({
   field: String,
   sortField: String,

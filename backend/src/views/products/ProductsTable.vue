@@ -3,7 +3,7 @@ import { computed, onMounted, ref, Ref } from "vue";
 import { useProductStore } from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
 import ProductModal from "./ProductModal.vue";
-import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
+import TableHeaderCell from "../../components/core/table/TableHeaderCell.vue";
 import { IProduct } from "../../types/product";
 import { ILink, IMetaLink } from "../../types/commons";
 import { PRODUCTS_PER_PAGE } from "../../constants";
