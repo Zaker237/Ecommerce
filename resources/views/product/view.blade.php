@@ -19,7 +19,6 @@
   },
   init() {
       this.activeImage = this.images.length > 0 ? this.images[0] : null
-      console.log(images);
   }
 }">
                 <div class="relative">

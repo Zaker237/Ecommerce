@@ -16,10 +16,22 @@
 
         @csrf
         <div class="mb-3">
-            <x-input type="email" name="email" placeholder="Your email address" :value="old('email')"/>
+            <x-input
+                class="w-full rounded border-gray-300 focus:border-purple-600 focus:ring-purple-600"
+                type="email"
+                name="email"
+                placeholder="Your email address"
+                :value="old('email')"
+            />
         </div>
         <div class="mb-3">
-            <x-input type="password" name="password" placeholder="Your password" :value="old('password')" />
+            <x-input
+                class="w-full rounded border-gray-300 focus:border-purple-600 focus:ring-purple-600"
+                type="password"
+                name="password"
+                placeholder="Your password"
+                :value="old('password')"
+            />
         </div>
         <div class="flex justify-between mb-3">
             <div class="flex items-center">
