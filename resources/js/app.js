@@ -9,8 +9,8 @@ window.Alpine = Alpine;
 document.addEventListener('alpine:init', () => {
 	Alpine.store('header', {
 		//cartItems: Alpine.$persist(0),
-		cartItemsObject: Alpine.$persist({}),
-		watchingItems: Alpine.$persist([]),
+		cartItemsObject: {},
+		watchingItems: [],
 		get watchlistItems() {
 			return this.watchingItems.length;
 		},
