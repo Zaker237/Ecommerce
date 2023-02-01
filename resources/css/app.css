@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .py-navbar-item {
+		@apply py-4
+  }
+  .px-navbar-item {
+		@apply px-4
+	}
+	.btn-primary {
+		@apply bg-purple-600 text-white py-2 px-3 rounded transition-colors hover:bg-purple-700 active:bg-purple-800 shadow-md
+	}
+	.btn-emerald {
+		@apply bg-emerald-500 text-white py-2 px-3 rounded transition-colors hover:bg-emerald-600 active:bg-emerald-700 shadow-md
+	}
+	.wysiwyg-editor {
+		@apply px-2 py-1 text-gray-600
+	}
+	.wysiwyg-editor table td {
+		@apply text-gray-600
+	}
+	.wysiwyg-editor table td:first-child {
+		@apply font-bold
+	}
+	.wysiwyg-editor h3, h4, h5 {
+		@apply mt-4 font-bold
+	}
+}
