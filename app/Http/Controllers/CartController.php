@@ -17,10 +17,10 @@ class CartController extends Controller
 
         $ids = Arr::pluck($cartitems, 'product_id');
         $products = Product::query()->whereIn('id', $ids)->get();
-        $cartitems = Arr::keyBy($cartitems, 'product_id');
+        $cartItems = Arr::keyBy($cartitems, 'product_id');
         $total = 0;
-        foreach($product as $product){
-            $total += $product->price * $cartitems[$product->id]['quantity'];
+        foreach($products as $product){
+            $total += $product->price * $cartItems[$product->id]['quantity'];
         }
 
         return view('cart.index', compact('cartItems', 'products', 'total'));
@@ -48,9 +48,8 @@ class CartController extends Controller
                 'count' => Cart::getCartItemsCount()
             ]);
         }else{
-            $cartitems = json_decode($request->cookies('cart_items', '[]'), true);
+            $cartitems = json_decode($request->cookie('cart_items', '[]'), true);
             $productFound = false;
-
             foreach($cartitems as &$item){
                 if($item['product_id'] === $product->id){
                     $item['quantity'] += $quantity;
@@ -59,7 +58,7 @@ class CartController extends Controller
                 }
             }
             
-            if(!$product){
+            if(!$productFound){
                 $cartitems[] = [
                     'user_id' => null,
                     'product_id' => $product->id,
@@ -86,7 +85,7 @@ class CartController extends Controller
                 'count' => Cart::getCartItemsCount()
             ]);
         }else{
-            $cartitems = json_decode($request->cookies('cart_items', '[]'), true);
+            $cartitems = json_decode($request->cookie('cart_items', '[]'), true);
 
             foreach($cartitems as $i=>&$item){
                 if($item['product_id'] === $product->id){
@@ -113,7 +112,7 @@ class CartController extends Controller
                 'count' => Cart::getCartItemsCount()
             ]);
         }else{
-            $cartitems = json_decode($request->cookies('cart_items', '[]'), true);
+            $cartitems = json_decode($request->cookie('cart_items', '[]'), true);
 
             foreach($cartitems as &$item){
                 if($item['product_id'] === $product->id){
