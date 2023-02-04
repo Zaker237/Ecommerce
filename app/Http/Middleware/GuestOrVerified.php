@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 
-class GuestOrVerified
+class GuestOrVerified extends EnsureEmailIsVerified
 {
     /**
      * Handle an incoming request.
@@ -14,8 +15,11 @@ class GuestOrVerified
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next, $redirectToRoute=null)
     {
-        return $next($request);
+        if(!$request->user()){
+            return $next($request);
+        }
+        return parent::handle($request, $next, $redirectToRoute);
     }
 }
