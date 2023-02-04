@@ -103,7 +103,7 @@
 								<a
 									class="flex items-center py-1 px-4 transition-all hover:bg-slate-700"
 									href="{{ route('logout') }}
-									onclick="event.preventDefault(); this.closest('form').submit();">
+									onclick="event.preventDefault();this.closest('form').submit();"
 								>
 									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 										stroke="currentColor" class="w-5 h-5 mr-2">
@@ -233,7 +233,11 @@
 						<li>
 							<form method="POST" action="{{ route('logout') }}">
 								@csrf
-								<a class="flex items-center py-1 px-4 hover:bg-slate-700" href="{{ route('logout') }}">
+								<a
+									class="flex items-center py-1 px-4 hover:bg-slate-700"
+									href="{{ route('logout') }}"
+									onclick="event.preventDefault();this.closest('form').submit();"
+								>
 									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 										stroke="currentColor" class="w-5 h-5 mr-2">
 										<path stroke-linecap="round" stroke-linejoin="round"
