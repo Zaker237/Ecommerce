@@ -1,13 +1,14 @@
 import './bootstrap';
-
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
+
+import { post } from './http'
 
 Alpine.plugin(collapse);
 window.Alpine = Alpine;
 
 document.addEventListener('alpine:init', () => {
-	Alpine.store('header', {
+	/*Alpine.store('header', {
 		//cartItems: Alpine.$persist(0),
 		cartItemsObject: {},
 		watchingItems: [],
@@ -19,7 +20,7 @@ document.addEventListener('alpine:init', () => {
 				(acc, next) => { return acc + parseInt(next.quantity) }, 0
 			);
 		},
-	});
+	}); */
 
 	Alpine.data('toast', () => ({
 		visible: false,
@@ -63,21 +64,26 @@ document.addEventListener('alpine:init', () => {
 	}));
 
 	Alpine.data('productItem', (product) => ({
-		id: product.id,
+		//id: product.id,
 		product: product,
-		quantity: 1,
+		//quantity: 1,
 		get watchlistItems() {
 			return this.$store.header.watchlistItems;
 		},
-		addToCart(id, quantity = 1) {
-			this.$store.header.cartItemsObject[id] = this.$store.header.cartItemsObject[id] || { ...product, quantity: 0 };
-			this.$store.header.cartItemsObject[id].quantity = parseInt(this.$store.header.cartItemsObject[id].quantity) + parseInt(quantity);
-			this.$dispatch('notify', {
-				message: 'The item was added into the Cart'
-			});
-			// this.$store.toast.show('The item was added into the cart');
+		addToCart(quantity = 1) {
+			console.log(this.product);
+			post(this.product.addToCartUrl, {quantity})
+				.then(result => {
+					this.$dispatch('cart-change', {count: result.count});
+					this.$dispatch('notify', {
+						message: 'The item was added into the cart',
+					});
+				})
+				.catch(response =>{
+					console.log(response);
+				});
 		},
-		addToWatchlist() {
+		/*addToWatchlist() {
 			if (this.isInWatchlist()) {
 				this.$store.header.watchingItems.splice(
 					this.$store.header.watchingItems.findIndex((p) => p.id === product.id),
@@ -98,22 +104,35 @@ document.addEventListener('alpine:init', () => {
 		},
 		isInWatchlist() {
 			return this.$store.header.watchingItems.find((p) => { return p.id === product.id });
-		},
+		},*/
 		removeItemFromCart() {
-			delete this.$store.header.cartItemsObject[this.id];
-			this.$dispatch('notify', {
-				message: 'The item was removed from the Cart'
-			});
+			post(this.product.removeFromCartUrl)
+				.then(result => {
+					this.$dispatch('notify', {
+						message: 'The item was removed from cart',
+					});
+					this.$dispatch('cart-change', {count: result.count});
+					this.cartItems = this.cartItems.filter(p => p.id !== product.id);
+				})
+				.catch(response =>{
+					console.log(response);
+				});
 		},
-		removeFromWatchlist() {
-			this.$store.header.watchingItems.splice(
-				this.$store.header.watchingItems.findIndex((p) => p.id === this.id),
-				1
-			);
-		}
+		changeQuantity() {
+			post(this.product.updateQuantityUrl, {quantity: product.quantity})
+				.then(result => {
+					this.$dispatch('cart-change', {count: result.count});
+					this.$dispatch('notify', {
+						message: 'The item quantity was updated',
+					});
+				})
+				.catch(response =>{
+					console.log(response);
+				});
+		},
 	}));
 
-	Alpine.data('signupForm', () => ({
+	/*Alpine.data('signupForm', () => ({
 		defaultClasses: 'focus:border-purple-600 focus:ring-purple-600 focus:outline-none',
 		errorClasses: 'border-red-500 focus:border-red-500 focus:ring-red-500 ring-red-600 ring-1',
 		successClasses: 'border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500 ring-green-600 ring-1',
@@ -172,7 +191,7 @@ document.addEventListener('alpine:init', () => {
 				this.errors.password_repeat = 'This repeat Password should be the same as the passwords';
 			}
 		},
-	}))
+	}))*/
 });
 
 Alpine.start();
