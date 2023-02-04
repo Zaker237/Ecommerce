@@ -20,7 +20,7 @@ class Cart
         $user = $request->user();
 
         if($user){
-            return CartItem::where(['user_id', $user->id])->sum('quantity');
+            return CartItem::where(['user_id' => $user->id])->sum('quantity');
         }else{
             $cartItems = self::getCookiesCartItems();
 
@@ -38,7 +38,7 @@ class Cart
         $user = $request->user();
 
         if($user){
-            return CartItem::where(['user_id', $user->id])->get()->map(
+            return CartItem::where(['user_id' => $user->id])->get()->map(
                 fn($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
             );
         }else{
@@ -64,9 +64,9 @@ class Cart
 
     public static function moveCartItemsIntoDb()
     {
-        $request = request();
+        $request = \request();
         $cartItems = self::getCookiesCartItems();
-        $dbCartItems = CartItem::where(['user_id'=>$request->user()->id])->get()->keyBy('product_id');
+        $dbCartItems = CartItem::where(['user_id' => $request->user()->id])->get()->keyBy('product_id');
         $newCartItems = [];
 
         foreach($cartItems as $cartItem){
