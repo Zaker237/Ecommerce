@@ -1,4 +1,11 @@
-<header x-data="{mobileMenuOpen: false}" class="flex justify-between bg-slate-800 text-white px-4">
+<header
+	x-data="{
+		mobileMenuOpen: false,
+		cartItemsCount: {{ \App\Http\Helpers\Cart::getCartItemsCount() }}
+	}"
+	@cart-change.window="cartItemsCount=$event.detail.count"
+	class="flex justify-between bg-slate-800 text-white px-4"
+>
     <div>
         <a class="block py-navbar-item" href="{{ route('home') }}"> Logo </a>
     </div>
@@ -27,7 +34,7 @@
         <ul class="">
             <li>
                 <a class="flex items-center justify-between py-2 px-navbar-item transition-all hover:bg-slate-700"
-                    href="/src/cart.html">
+                    href="{{ route('cart.index') }}">
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6 mr-2">
@@ -36,8 +43,12 @@
                         </svg>
                         Card
                     </div>
-                    <small x-show="$store.header.cartItems" x-text="$store.header.cartItems" x-transition
-                        class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
+					<small
+						x-show="cartItemsCount"
+						x-text="cartItemsCount"
+						x-transition
+						class="py-[2px] px-[8px] rounded-full bg-red-500"
+					></small>
                 </a>
 			</li>
 			@if (!Auth::guest())
@@ -51,7 +62,7 @@
 						</svg>
 					</a>
 					<ul x-show="open" x-transition class="w-full bg-slate-800 py-2">
-						<li>
+						<!--<li>
 							<a class="flex items-center py-1 px-4 hover:bg-slate-700" href="/src/watchlist.html">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 									stroke="currentColor" class="w-5 h-5 mr-2">
@@ -62,7 +73,7 @@
 								<small x-show="$store.header.watchlistItems" x-text="$store.header.watchlistItems"
 									x-transition class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
 							</a>
-						</li>
+						</li> -->
 						<li>
 							<a class="flex items-center py-1 px-4 transition-all hover:bg-slate-700"
 								href="/src/orders.html">
@@ -156,15 +167,20 @@
         <ul class="grid grid-flow-col items-center">
             <li>
                 <a class="relative flex items-center py-navbar-item px-navbar-item hover:bg-slate-700"
-                    href="/src/cart.html">
+                    href="{{ route('cart.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 mr-2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                     </svg>
                     Card
-                    <small x-show="$store.header.cartItems" x-text="$store.header.cartItems" x-cloak x-transition
-                        class=" absolute z-[100] py-[2px] px-[8px] top-4 -right-3 rounded-full bg-red-500"></small>
+					<small
+						x-show="cartItemsCount"
+						x-text="cartItemsCount"
+						x-cloak
+						x-transition
+						class="absolute z-[100] py-[2px] px-[8px] top-4 -right-3 rounded-full bg-red-500"
+					></small>
                 </a>
 			</li>
 			@if (!Auth::guest())
@@ -179,7 +195,7 @@
 					</a>
 					<ul @click.outside="open = false" x-show="open" x-transition x-cloak
 						class="absolute z-10 w-36 bg-slate-800 right-0 py-2">
-						<li>
+						<!--<li>
 							<a class="flex items-center justify-between py-2 px-3 hover:bg-slate-700"
 								href="/src/watchlist.html">
 								<div class="flex items-center">
@@ -193,7 +209,7 @@
 								<small x-show="$store.header.watchlistItems" x-text="$store.header.watchlistItems"
 									x-transition class="py-[2px] px-[8px] rounded-full bg-red-500"></small>
 							</a>
-						</li>
+						</li> -->
 						<li>
 							<a class="flex items-center py-1 px-4 hover:bg-slate-700" href="/src/orders.html">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
