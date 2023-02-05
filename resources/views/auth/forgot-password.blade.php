@@ -1,36 +1,19 @@
 <x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    <form action="{{ route('password.email') }}" method="POST">
+        @csrf
+        <div class="w-full sm:w-[400px] px-5 mx-auto mt-15 text-center">
+        <h2 class="text-2xl font-semibold mb-2">Enter your Email to reset your password</h2>
+        <p class="mb-4">or <a href="{{ route('login') }}" class="text-purple-600 hover:text-purple-500">Login with existing account</a></p>
+            <div class="mb-3">
+                <input
+                    type="email"
+                    placeholder="Your Email"
+                    class="w-full rounded border-gray-300 focus:border-purple-600 focus:ring-purple-600"
+                />
+            </div>
+            <button class="flex items-center justify-center btn-emerald bg:bg-emerald-600 w-full mt-3">
+                Submit
+            </button>
         </div>
-
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
+    </form>
 </x-guest-layout>
