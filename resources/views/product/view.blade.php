@@ -1,26 +1,39 @@
 <x-app-layout>
     <!-- Product Item -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 p-5">
+    <div
+        class="grid grid-cols-1 md:grid-cols-5 gap-6 p-5"
+        x-data="productItem({{
+            json_encode([
+                'id' => $product->id,
+                'image' => $product->image,
+                'title' => $product->title,
+                'price' => $product->price,
+                'addToCartUrl' => route('cart.add', $product),
+            ])
+        }})"
+    >
         <div class="md:col-span-3">
-            <div x-data="{
-  images: ['{{$product->image}}'],
-  activeImage: null,
-  prev() {
-      let index = this.images.indexOf(this.activeImage);
-      if (index === 0) 
-          index = this.images.length;
-      this.activeImage = this.images[index - 1];
-  },
-  next() {
-      let index = this.images.indexOf(this.activeImage);
-      if (index === this.images.length - 1) 
-          index = -1;
-      this.activeImage = this.images[index + 1];
-  },
-  init() {
-      this.activeImage = this.images.length > 0 ? this.images[0] : null
-  }
-}">
+            <div 
+                x-data="{
+                    images: ['{{$product->image}}'],
+                    activeImage: null,
+                    prev() {
+                        let index = this.images.indexOf(this.activeImage);
+                        if (index === 0) 
+                            index = this.images.length;
+                        this.activeImage = this.images[index - 1];
+                    },
+                    next() {
+                        let index = this.images.indexOf(this.activeImage);
+                        if (index === this.images.length - 1) 
+                            index = -1;
+                        this.activeImage = this.images[index + 1];
+                    },
+                    init() {
+                        this.activeImage = this.images.length > 0 ? this.images[0] : null
+                    }
+                }"
+            >
                 <div class="relative">
                     <template x-for="image in images">
                         <div x-show="activeImage === image" class="aspect-w-3 aspect-h-2">
@@ -92,9 +105,9 @@
                 <label for="quantity">Quantity</label>
                 <input type="number" name="quantity" x-ref="quantityElement"
                     class="py-2 px-3 border-gray-300 rounded w-24 focus:border-purple-600 focus:ring-purple-600"
-                    value="1" />
+                    value="1" min="1" />
             </div>
-            <button @click="addToCart(id, $refs.quantityElement.value)"
+            <button @click="addToCart($refs.quantityElement.value)"
                 class="flex justify-center items-center btn-primary w-full">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6 mr-2">
