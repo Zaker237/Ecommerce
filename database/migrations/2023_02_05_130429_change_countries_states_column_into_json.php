@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('countries', function (Blueprint $table) {
-            $table-dropColumn('states');
+            $table->dropColumn('states');
         });
         Schema::table('countries', function (Blueprint $table) {
-            $table-json('states')->nullable();
+            $table->json('states')->nullable();
         });
     }
 
