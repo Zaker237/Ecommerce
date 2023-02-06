@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum AddressType: string
+class AddressType
 {
-    case Shipping = 'shipping';
-    case Billing = 'billing';
-}
+    public const Shipping = 'shipping';
+    public const Billing = 'billing';
+};
