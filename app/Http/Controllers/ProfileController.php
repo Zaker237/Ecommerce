@@ -15,9 +15,7 @@ class ProfileController extends Controller
 {
     public function view(Request $request)
     {
-        /** @var \App\Models\User $user */
         $user = $request->user();
-        /** @var \App\Models\Customer $customer */
         $customer = $user->customer;
         $shippingAddress = $customer->shippingAddress ?: new CustomerAddress(['type' => AddressType::Shipping]);
         $billingAddress = $customer->billingAddress ?: new CustomerAddress(['type' => AddressType::Billing]);
