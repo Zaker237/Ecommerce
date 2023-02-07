@@ -71,7 +71,10 @@
                         </div>
                         <p>Shipping and tax will be applied on checkout</p>
                     </div>
-                    <button class="btn-primary w-full mt-3">Checkout</button>
+                    <form action="{{ route('cart.checkout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn-primary w-full mt-3">Checkout</button>
+                    </form>
                 </template>
                 <template x-if="!cartItems.length">
                     <div class="text-center py-8 text-gray-500">

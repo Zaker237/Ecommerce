@@ -3,7 +3,10 @@
 
 namespace App\Http\Helpers;
 
+use Illuminate\Support\Arr;
+
 use App\Models\CartItem;
+use App\Models\Product;
 
 /**
  * Class Cart
@@ -84,5 +87,15 @@ class Cart
         if(!empty($newCartItems)){
             CartItem::insert($newCartItems);
         }
+    }
+
+    public static function getProductsAndCartItems()
+    {
+        $cartitems = self::getCartItems();
+        $ids = Arr::pluck($cartitems, 'product_id');
+        $products = Product::query()->whereIn('id', $ids)->get();
+        $cartItems = Arr::keyBy($cartitems, 'product_id');
+
+        return [$products, $cartItems];
     }
 }
