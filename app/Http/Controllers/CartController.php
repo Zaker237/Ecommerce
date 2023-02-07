@@ -9,15 +9,12 @@ use Illuminate\Support\Arr;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Http\Helpers\Cart;
+use Stripe\Stripe;
 
 class CartController extends Controller
 {
     public function index(){
-        $cartitems = Cart::getCartItems();
-
-        $ids = Arr::pluck($cartitems, 'product_id');
-        $products = Product::query()->whereIn('id', $ids)->get();
-        $cartItems = Arr::keyBy($cartitems, 'product_id');
+        list($products, $cartItems) = Cart::getProductsAndCartItems();
         $total = 0;
         foreach($products as $product){
             $total += $product->price * $cartItems[$product->id]['quantity'];
