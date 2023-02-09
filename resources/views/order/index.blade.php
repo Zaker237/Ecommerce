@@ -9,6 +9,7 @@
                         <th class="text-left p-2">Date</th>
                         <th class="text-left p-2">Status</th>
                         <th class="text-left p-2">Subtotal</th>
+                        <th class="text-left p-2 whitespace-nowrap">Items</th>
                         <th class="text-left p-2">Actions</th>
                     </tr>
                 </thead>
@@ -28,6 +29,7 @@
                             {{ $order->isPaid() ? 'bg-emerald-500' : 'bg-gray-400' }} text-white">{{ $order->status }}</span>
                             </td>
                             <td class="py-1 px-2">${{ $order->total_price }}</td>
+                            <td class="py-1 px-2">{{ $order->Items->count() }} items(s)</td>
                             <td class="flex gap-2 py-1 px-2">
                                 <div x-data="{
                             open: false,
@@ -81,7 +83,7 @@
                                 @if (!$order->isPaid())
                                     <form action="{{ route('checkout.order', $order) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="flex items-center btn-primary whitespace-nowrap">
+                                        <button type="submit" class="flex py-1 items-center btn-primary whitespace-nowrap">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -96,6 +98,9 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="mt-3">
+            {{$orders->links()}}
         </div>
     </div>
 </x-app-layout>
