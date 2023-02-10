@@ -18,7 +18,7 @@ class CustomerSeeder extends Seeder
         Customer::create([
             'first_name' => 'Alex',
             'last_name' => 'Admin',
-            'phone' => 'Admin',
+            'phone' => '004917258558963',
             'created_at' => now(),
             'updated_at' => now(),
             'created_by' => 1,

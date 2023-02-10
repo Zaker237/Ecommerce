@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             CustomerSeeder::class,
             ProductSeeder::class,
-            CountrySeeder::class
+            CountrySeeder::class,
+            CustomerAddressSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
     }
