@@ -21,8 +21,6 @@ const bgColor = () => {
     return "";
   }
 }
-
-console.log(bgColor());
 </script>
 
 <template>

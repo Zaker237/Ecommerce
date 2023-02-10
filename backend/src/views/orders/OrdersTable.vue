@@ -64,6 +64,7 @@ const sortOrders = (field: string) => {
 const showAddNewModal = () => {
   showOrderModal.value = true
 }
+
 const deleteOrder = (order: IOrder) => {
   if (!confirm(`Are you sure you want to delete the order?`)) {
     return
