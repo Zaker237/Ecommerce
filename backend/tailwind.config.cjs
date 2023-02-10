@@ -15,6 +15,8 @@ module.exports = {
       red: colors.red,
       pink: colors.pink,
       indigo: colors.indigo,
+      emerald: colors.emerald,
+      orange: colors.orange,
       main1: "#1e293b"
     },
     fontFamily: {
