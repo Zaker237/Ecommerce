@@ -1,27 +1,25 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import store from "../../store";
+import { useOrderStore } from "../../store/order.store";
 import {useRoute} from "vue-router";
-import axiosClient from "../../axios.js";
+import { IOrder } from "../../types/order";
 import OrderStatus from "./OrderStatus.vue";
 
-const route = useRoute()
-const order = ref(null);
-const orderStatuses = ref([]);
+const orderStore = useOrderStore();
 
-onMounted(() => {
-  store.dispatch('getOrder', route.params.id)
-    .then(({data}) => {
-      order.value = data
-    })
-  axiosClient.get(`/orders/statuses`)
-    .then(({data}) => orderStatuses.value = data)
+const route = useRoute();
+const order = ref({});
+const orderStatuses = computed(() => orderStore.statuse);
+
+onMounted(async () => {
+  const data = await orderStore.getItem(route.params.id);
+  order.value = {...data};
+  await orderStore.getOrderStatuse();
 })
+
 const onStatusChange = () => {
-  axiosClient.post(`/orders/change-status/${order.value.id}/${order.value.status}`)
-    .then(({data}) => {
-      store.commit('showToast', `Order status was successfully changed into "${order.value.status}"`)
-    })
+  orderStore.updateStatus(order.value.id, order.value.status);
+  //store.commit('showToast', `Order status was successfully changed into "${order.value.status}"`)
 }
 </script>
 
@@ -67,15 +65,15 @@ const onStatusChange = () => {
         <tbody>
         <tr>
           <td class="font-bold py-1 px-2">Full Name</td>
-          <td>{{ order.customer.first_name }} {{ order.customer.last_name }}</td>
+          <td>{{ order?.customer?.first_name }} {{ order?.customer?.last_name }}</td>
         </tr>
         <tr>
           <td class="font-bold py-1 px-2">Email</td>
-          <td>{{ order.customer.email }}</td>
+          <td>{{ order?.customer?.email }}</td>
         </tr>
         <tr>
           <td class="font-bold py-1 px-2">Phone</td>
-          <td>{{ order.customer.phone }}</td>
+          <td>{{ order?.customer?.phone }}</td>
         </tr>
         </tbody>
       </table>
@@ -88,9 +86,9 @@ const onStatusChange = () => {
         <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">Billing Address</h2>
         <!--  Billing Address Details-->
         <div>
-          {{ order.customer.billingAddress.address1 }}, {{ order.customer.billingAddress.address2 }} <br>
-          {{ order.customer.billingAddress.city }}, {{ order.customer.billingAddress.zipcode }} <br>
-          {{ order.customer.billingAddress.state }}, {{ order.customer.billingAddress.country }} <br>
+          {{ order?.customer?.billingAddress?.address1 }}, {{ order?.customer?.billingAddress?.address2 }} <br>
+          {{ order?.customer?.billingAddress?.city }}, {{ order?.customer?.billingAddress?.zipcode }} <br>
+          {{ order?.customer?.billingAddress?.state }}, {{ order?.customer?.billingAddress?.country }} <br>
         </div>
         <!--/  Billing Address Details-->
       </div>
@@ -98,9 +96,9 @@ const onStatusChange = () => {
         <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">Shipping Address</h2>
         <!--  Shipping Address Details-->
         <div>
-          {{ order.customer.shippingAddress.address1 }}, {{ order.customer.shippingAddress.address2 }} <br>
-          {{ order.customer.shippingAddress.city }}, {{ order.customer.shippingAddress.zipcode }} <br>
-          {{ order.customer.shippingAddress.state }}, {{ order.customer.shippingAddress.country }} <br>
+          {{ order?.customer?.shippingAddress?.address1 }}, {{ order?.customer?.shippingAddress?.address2 }} <br>
+          {{ order?.customer?.shippingAddress?.city }}, {{ order?.customer?.shippingAddress?.zipcode }} <br>
+          {{ order?.customer?.shippingAddress?.state }}, {{ order?.customer?.shippingAddress?.country }} <br>
         </div>
         <!--/  Shipping Address Details-->
       </div>
@@ -124,8 +122,8 @@ const onStatusChange = () => {
               </h3>
             </div>
             <div class="flex justify-between items-center">
-              <div class="flex items-center">Qty: {{ item.quantity }}</div>
-              <span class="text-lg font-semibold"> ${{ item.unit_price }} </span>
+              <div class="flex items-center">Qty: {{ item?.quantity }}</div>
+              <span class="text-lg font-semibold"> ${{ item?.unit_price }} </span>
             </div>
           </div>
         </div>

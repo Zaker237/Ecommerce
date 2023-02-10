@@ -1,37 +1,45 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
-import store from "../../store";
+import {computed, onMounted, Ref, ref} from "vue";
+import { useOrderStore } from "../../store/order.store";
 import Spinner from "../../components/core/Spinner.vue";
 import {PRODUCTS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
+import { IOrder } from "../../types/order";
+import { ILink, IMetaLink } from "../../types/commons";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
 import OrderStatus from "./OrderStatus.vue";
 
-const perPage = ref(PRODUCTS_PER_PAGE);
-const search = ref('');
-const orders = computed(() => store.state.orders);
-const sortField = ref('updated_at');
-const sortDirection = ref('desc')
+const orderStore = useOrderStore();
+
+const perPage: Ref<number> = ref(PRODUCTS_PER_PAGE);
+const search: Ref<string> = ref('');
+const orders = computed(() => orderStore.items);
+const ordersLoading = computed(() => orderStore.loading);
+const ordersLinks = computed(() => orderStore.links);
+const ordersMeta = computed(() => orderStore.meta);
+const sortField: Ref<string> = ref('updated_at');
+const sortDirection: Ref<string> = ref('desc')
 const order = ref({})
-const showOrderModal = ref(false);
+const showOrderModal: Ref<boolean> = ref(false);
 const emit = defineEmits(['clickEdit']);
 
 onMounted(() => {
   getOrders();
 })
 
-const getForPage = (ev, link) => {
+const getForPage = (ev: any, link: IMetaLink) => {
   ev.preventDefault();
   if (!link.url || link.active) {
     return;
+  }else{
+    orderStore.getItems({url: link.url})
   }
-  getOrders(link.url)
 }
 
 const getOrders = (url = null) => {
-  store.dispatch("getOrders", {
-    url,
+  orderStore.getItems({
+    url: url,
     search: search.value,
     per_page: perPage.value,
     sort_field: sortField.value,
@@ -39,7 +47,7 @@ const getOrders = (url = null) => {
   });
 }
 
-const sortOrders = (field) => {
+const sortOrders = (field: string) => {
   if (field === sortField.value) {
     if (sortDirection.value === 'desc') {
       sortDirection.value = 'asc';
@@ -56,15 +64,15 @@ const sortOrders = (field) => {
 const showAddNewModal = () => {
   showOrderModal.value = true
 }
-const deleteOrder = (order) => {
+const deleteOrder = (order: IOrder) => {
   if (!confirm(`Are you sure you want to delete the order?`)) {
     return
   }
-  store.dispatch('deleteOrder', order.id)
-    .then(res => {
-      // TODO Show notification
-      store.dispatch('getOrders')
-    })
+  if (product.id){
+    orderStore.removeItem(order.id);
+  }else{
+    return;
+  }
 }
 const showOrder = (p) => {
   emit('clickShow', p)
@@ -76,8 +84,11 @@ const showOrder = (p) => {
     <div class="flex justify-between border-b-2 pb-3">
       <div class="flex items-center">
         <span class="whitespace-nowrap mr-3">Per Page</span>
-        <select @change="getOrders(null)" v-model="perPage"
-                class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+        <select
+					@change="getOrders(null)"
+					v-model="perPage"
+          class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+				>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
@@ -122,7 +133,7 @@ const showOrder = (p) => {
         </TableHeaderCell>
       </tr>
       </thead>
-      <tbody v-if="orders.loading || !orders.data.length">
+      <tbody v-if="ordersLoading || !orders.length">
       <tr>
         <td colspan="6">
           <Spinner v-if="orders.loading"/>
@@ -133,7 +144,7 @@ const showOrder = (p) => {
       </tr>
       </tbody>
       <tbody v-else>
-      <tr v-for="(order, index) of orders.data">
+      <tr v-for="(order, index) of orders">
         <td class="border-b p-2 ">{{ order.id }}</td>
         <td class="border-b p-2 ">
           {{ order.customer.first_name }} {{ order.customer.last_name }}
@@ -165,18 +176,18 @@ const showOrder = (p) => {
       </tbody>
     </table>
 
-    <div v-if="!orders.loading" class="flex justify-between items-center mt-5">
-      <div v-if="orders.data.length">
-        Showing from {{ orders.from }} to {{ orders.to }}
+    <div v-if="!ordersLoading" class="flex justify-between items-center mt-5">
+      <div v-if="orders.length">
+        Showing from {{ ordersMeta.from}} to {{ ordersMeta.to }}
       </div>
       <nav
-        v-if="orders.total > orders.limit"
+        v-if="ordersMeta.total && ordersMeta.per_page && ordersMeta?.total > ordersMeta.per_page"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >
         <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
         <a
-          v-for="(link, i) of orders.links"
+          v-for="(link, i) of ordersMeta.links"
           :key="i"
           :disabled="!link.url"
           href="#"
@@ -188,7 +199,7 @@ const showOrder = (p) => {
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md' : '',
-              i === orders.links.length - 1 ? 'rounded-r-md' : '',
+              ordersMeta.links && i === ordersMeta.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
           v-html="link.label"
