@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,9 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function(){
 
     // product routes
     Route::apiResource('products', ProductController::class);
+
+    // user routes
+    Route::apiResource('users', UserController::class);
 
     // order routes
     Route::get('orders', [OrderController::class, 'index']);
