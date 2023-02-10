@@ -32,7 +32,7 @@ class OrderController extends Controller
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
-        return OrderListResource::collection($query);
+        return OrderResource::collection($query);
     }
 
     public function view(Order $order)
