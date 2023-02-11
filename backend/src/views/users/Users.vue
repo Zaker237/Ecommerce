@@ -5,6 +5,7 @@ import UserModal from "./UserModal.vue";
 import UsersTable from "./UsersTable.vue";
 
 const userStore = useUserStore();
+
 const DEFAULT_USER = {
   id: '',
   title: '',
