@@ -68,7 +68,7 @@ class CustomerController extends Controller
     {
         $customerData = $request->validated();
         $customerData['updated_by'] = $request->user()->id;
-        $customerData['status'] = $customerData['status'] ? CustomerStatus::Active->value : CustomerStatus::Disabled->value;
+        $customerData['status'] = $customerData['status'] ? CustomerStatus::Active : CustomerStatus::Disabled;
         $shippingData = $customerData['shippingAddress'];
         $billingData = $customerData['billingAddress'];
 
@@ -78,14 +78,14 @@ class CustomerController extends Controller
             $customer->shippingAddress->update($shippingData);
         } else {
             $shippingData['customer_id'] = $customer->user_id;
-            $shippingData['type'] = AddressType::Shipping->value;
+            $shippingData['type'] = AddressType::Shipping;
             CustomerAddress::create($shippingData);
         }
         if ($customer->billingAddress) {
             $customer->billingAddress->update($billingData);
         } else {
             $billingData['customer_id'] = $customer->user_id;
-            $billingData['type'] = AddressType::Billing->value;
+            $billingData['type'] = AddressType::Billing;
             CustomerAddress::create($billingData);
         }
 
