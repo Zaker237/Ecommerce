@@ -35,7 +35,7 @@ class CustomerController extends Controller
         if ($search) {
             $query
                 ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%{$search}%")
-                ->join('users', 'customers.user_id', '=', 'users.id')
+                ->join('users', 'customers.created_by', '=', 'users.id')
                 ->orWhere('users.email', 'like', "%{$search}%")
                 ->orWhere('customers.phone', 'like', "%{$search}%")
             ;
