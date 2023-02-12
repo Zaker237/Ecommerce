@@ -50,7 +50,6 @@ const closeModal = () => {
 }
 
 const onSubmit = async () => {
-  loading.value = true
   if (product.value.id) {
     await productStore.updateItem(product.value);
     closeModal();
