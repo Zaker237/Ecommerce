@@ -5,6 +5,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Products from "../views/products/Products.vue";
 import Users from "../views/users/Users.vue";
 import Customers from "../views/customers/Customers.vue";
+import CustomerView from "../views/customers/CustomerView.vue";
 import Orders from "../views/orders/Orders.vue";
 import OrderView from "../views/orders/OrderView.vue";
 import RequestPassword from "../views/RequestPassword.vue";
@@ -50,6 +51,11 @@ const router = createRouter({
           path: "customers",
           name: "app.customers",
           component: Customers
+        },
+        {
+          path: "customers/:id",
+          name: "app.customers.view",
+          component: CustomerView
         },
         {
           path: "orders",
