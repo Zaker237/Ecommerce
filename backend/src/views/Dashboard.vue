@@ -4,9 +4,10 @@ import DoughnutChart from '../components/core/Charts/Doughnut.vue'
 import axiosClient from "../axios.js";
 import {onMounted, ref, Ref} from "vue";
 import Spinner from "../components/core/Spinner.vue";
+import { IDateOptions } from "../types/dashboard";
 import CustomInput from "../components/core/CustomInput.vue";
 
-const dateOptions = ref([
+const dateOptions: Ref<IDateOptions[]> = ref([
   {key: '1d', text: 'Last Day'},
   {key: '1k', text: 'Last Week'},
   {key: '2k', text: 'Last 2 Weeks'},
@@ -16,7 +17,7 @@ const dateOptions = ref([
   {key: 'all', text: 'All Time'},
 ]);
 
-const chosenDate: Ref<string> = ref('all');
+const chosenDate: Ref<String> = ref('all');
 
 const loading = ref({
   customersCount: true,
@@ -26,11 +27,12 @@ const loading = ref({
   ordersByCountry: true,
   latestCustomers: true,
   latestOrders: true
-})
-const customersCount: Ref<number> = ref(0);
-const productsCount: Ref<number> = ref(0);
-const paidOrders: Ref<number> = ref(0);
-const totalIncome: Ref<number> = ref(0);
+});
+
+const customersCount: Ref<Number> = ref(0);
+const productsCount: Ref<Number> = ref(0);
+const paidOrders: Ref<Number> = ref(0);
+const totalIncome: Ref<Number> = ref(0);
 const ordersByCountry = ref([]);
 const latestCustomers = ref([]);
 const latestOrders = ref([]);
