@@ -94,7 +94,7 @@ const editUser = (u: IUser) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{users.total}} users</span>
+        <span class="ml-3">Found {{ usersMeta.total }} users</span>
       </div>
       <div>
         <input v-model="search" @change="getUsers(null)"

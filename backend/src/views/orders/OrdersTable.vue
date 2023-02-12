@@ -75,8 +75,8 @@ const deleteOrder = (order: IOrder) => {
     return;
   }
 }
-const showOrder = (p) => {
-  emit('clickShow', p)
+const showOrder = (order: IOrder) => {
+  emit('clickShow', order)
 }
 </script>
 
@@ -96,7 +96,7 @@ const showOrder = (p) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{ orders.total }} orders</span>
+        <span class="ml-3">Found {{ ordersMeta.total }} orders</span>
       </div>
       <div>
         <input
@@ -137,7 +137,7 @@ const showOrder = (p) => {
       <tbody v-if="ordersLoading || !orders.length">
       <tr>
         <td colspan="6">
-          <Spinner v-if="orders.loading"/>
+          <Spinner v-if="ordersLoading"/>
           <p v-else class="text-center py-8 text-gray-700">
             There are no orders
           </p>
