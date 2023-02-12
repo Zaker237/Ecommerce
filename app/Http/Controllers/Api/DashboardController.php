@@ -73,8 +73,8 @@ class DashboardController extends Controller
     public function latestCustomers()
     {
         return Customer::query()
-            ->select(['id', 'first_name', 'last_name', 'u.email', 'phone', 'u.created_at'])
-            ->join('users AS u', 'u.id', '=', 'customers.user_id')
+            ->select(['customers.id', 'customers.first_name', 'customers.last_name', 'u.email', 'customers.phone', 'u.created_at'])
+            ->join('users AS u', 'u.id', '=', 'customers.id')
             ->where('status', CustomerStatus::Active)
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -93,7 +93,7 @@ class DashboardController extends Controller
                 ->where('o.status', OrderStatus::Paid)
                 ->limit(10)
                 ->orderBy('o.created_at', 'desc')
-                ->groupBy('o.id', 'o.total_price', 'o.created_at', 'c.user_id', 'c.first_name', 'c.last_name')
+                ->groupBy('o.id', 'o.total_price', 'o.created_at', 'c.id', 'c.first_name', 'c.last_name')
                 ->get()
         );
     }
