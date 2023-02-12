@@ -22,12 +22,12 @@ class CustomerResource extends JsonResource
         $shipping = $this->shippingAddress;
         $billing = $this->billingAddress;
         return [
-            'id' => $this->user_id,
+            'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->user->email,
             'phone' => $this->phone,
-            'status' => $this->status === CustomerStatus::Active->value,
+            'status' => $this->status === CustomerStatus::Active,
             'created_at' => (new \DateTime($this->created_at))->format('Y-m-d H:i:s'),
             'updated_at' => (new \DateTime($this->updated_at))->format('Y-m-d H:i:s'),
 
