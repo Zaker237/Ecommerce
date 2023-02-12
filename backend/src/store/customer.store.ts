@@ -22,7 +22,7 @@ export const useCustomerStore = defineStore({
 	} as RootCustomerState),
 
 	getters: {
-		items: (state) => state.customers,
+		items: (state) => state.customers
 	},
 
 	actions: {
@@ -110,6 +110,7 @@ export const useCustomerStore = defineStore({
 		},
 
 		async updateItem(newCustomer: ICustomer) {
+			console.log(newCustomer);
 			this.loading = true;
 			try {
 				const { data, status } = await axios.put<ICustomer>(
