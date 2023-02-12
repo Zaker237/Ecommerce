@@ -67,7 +67,7 @@ export type GetCustomerListResponse = {
 };
 
 export type RootCustomerState = {
-	customers: ICustomer[];
+  customers: ICustomer[];
   links: ILink;
   meta: IMeta;
   loading: boolean,
