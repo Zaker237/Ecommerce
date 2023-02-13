@@ -19,6 +19,7 @@ class CustomerSeeder extends Seeder
             'first_name' => 'Alex',
             'last_name' => 'Admin',
             'phone' => '004917258558963',
+            'status' => 'active',
             'created_at' => now(),
             'updated_at' => now(),
             'created_by' => 1,

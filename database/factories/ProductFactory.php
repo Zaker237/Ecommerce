@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'image' => $this->faker->imageUrl(),
             'description' => $this->faker->realText(2000),
             'price' => $this->faker->randomFloat(2, 2, 5),
+            'published' => 1,
             'created_at' => now(),
             'updated_at' => now(),
             'created_by' => 1,
