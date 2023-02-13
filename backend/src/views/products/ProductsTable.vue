@@ -39,7 +39,7 @@ const getForPage = (ev: any, link: IMetaLink) => {
 
 const getProducts = (url = null) => {
   productStore.getItems({
-    url,
+    url: url,
     search: search.value,
     per_page: perPage.value,
     sort_field: sortField.value,
