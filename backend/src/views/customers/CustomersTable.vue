@@ -9,7 +9,6 @@ import { ICustomer } from "../../types/customer";
 import { ILink, IMetaLink } from "../../types/commons";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {EllipsisVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/outline'
-import CustomerModal from "./CustomerModal.vue";
 
 const customerStore = useCustomerStore();
 const countryStore = useCountryStore();
@@ -21,10 +20,10 @@ const customersLoading = computed(() => customerStore.loading);
 const customersLinks = computed(() => customerStore.links);
 const customersMeta = computed(() => customerStore.meta);
 const sortField: Ref<string> = ref('updated_at');
-const sortDirection: Ref<string> = ref('desc')
-const customer = ref({})
+const sortDirection: Ref<string> = ref('desc');
+
+const customer = ref({});
 const showCustomerModal: Ref<boolean> = ref(false);
-const emit = defineEmits(['clickEdit'])
 
 onMounted(() => {
   getCustomers();
@@ -81,10 +80,6 @@ const deleteCustomer = (customer: ICustomer) => {
   }else{
     return;
   }
-}
-
-const editCustomer = (customer: ICustomer) => {
-  emit('clickEdit', customer)
 }
 </script>
 
@@ -201,12 +196,12 @@ const editCustomer = (customer: ICustomer) => {
               >
                 <div class="px-1 py-1">
                   <MenuItem v-slot="{ active }">
-                    <button
+                    <router-link
+                      :to="{name: 'app.customers.view', params: {id: customer.id}}"
                       :class="[
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                       ]"
-                      @click="editCustomer(customer)"
                     >
                       <PencilIcon
                         :active="active"
@@ -214,7 +209,7 @@ const editCustomer = (customer: ICustomer) => {
                         aria-hidden="true"
                       />
                       Edit
-                    </button>
+                    </router-link>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
                     <button

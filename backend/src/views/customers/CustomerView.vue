@@ -38,15 +38,16 @@ const shippingStateOptions = computed(() => {
 const onSubmit = async () => {
   if (customer.value.id) {
     await customerStore.updateItem(customer.value);
-    closeModal();
+    //closeModal();
   } else {
     await customerStore.addItem(customer.value);
-    closeModal();
+    //closeModal();
   }
 }
 
-onMounted(() => {
-	const data: ICustomer = await customerStore.getItem(route.params.id);
+onMounted(async () => {
+	const data = await customerStore.getItem(route.params.id);
+  await countryStore.getItems();
   customer.value = data
   title.value = `Update customer: "${data.first_name} ${data.last_name}"`
 });

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {computed, onMounted, ref, reactive, Ref} from "vue";
+import {computed, onMounted, ref, Ref} from "vue";
 import { useCustomerStore } from "../../store/customer.store";
 import { ICustomer } from "../../types/customer";
-import CustomerModal from "./CustomerModal.vue";
 import CustomersTable from "./CustomersTable.vue";
 
 const customerStore = useCustomerStore();
@@ -11,8 +10,7 @@ const DEFAULT_CUSTOMER = {
 }
 
 const customers = computed(() => customerStore.items);
-const customerModel: Ref<ICustomer> = reactive({...DEFAULT_CUSTOMER})
-const showCustomerModal = ref(false);
+const showCustomerModal: Ref<Boolean> = ref(false);
 
 const showAddNewModal = () => {
   showCustomerModal.value = true
@@ -58,12 +56,7 @@ const onModalClose = () => {
 	<div class="flex items-center justify-between mb-3">
     <h1 class="text-3xl font-semibold">Customers</h1>
   </div>
-  <CustomersTable @clickEdit="editCustomer" />
-  <CustomerModal
-		v-model="showCustomerModal"
-		:customer="customerModel"
-		@close="onModalClose"
-	/>
+  <CustomersTable @clickEdit="editCustomer"/>
 </template>
 
 <style scoped></style>
