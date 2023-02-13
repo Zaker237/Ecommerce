@@ -187,8 +187,7 @@ export const useDashboardStore = defineStore({
 						},
 					},
 				);
-				this.orders = data;
-				console.log(data);
+				this.orders = data.data;
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					this.error = error.message;
