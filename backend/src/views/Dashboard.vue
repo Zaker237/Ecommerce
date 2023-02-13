@@ -68,6 +68,7 @@ const updateDashboard = async () => {
 const onDatePickerChange = async () => {
   await updateDashboard();
 }
+
 onMounted(async () => {
 	await updateDashboard();
 });
