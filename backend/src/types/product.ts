@@ -7,6 +7,7 @@ export interface IProduct {
 	description: string | null;
   image_url?: string;
   price: number;
+  published: boolean;
   created_at: string | null;
   updated_at: string | null;
 }
