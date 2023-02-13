@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, watch, onMounted} from "vue";
-import BarChart from "../../components/core/Charts/Bar.vue";
+import BarChart from "../../components/core/charts/Bar.vue";
 import {useRoute} from "vue-router";
 import { useReportStore } from "../../store/report.store";
 
@@ -11,11 +11,12 @@ const chartData = ref([]);
 watch(
 	route,
 	async (rt) => {
-		await getData();
+  	await getData();
 	}
-)
+);
+
 const getData = async () => {
-  chartData.value = await reportStore.getOrdersReport(route.params.date);
+  chartData.value = await reportStore.getCustomersReport(route.params.date);
 }
 
 onMounted(async () => {
@@ -24,7 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
-	<BarChart :data="chartData" :height="240"/>
+	<BarChart :data="chartData" :height="240" />
 </template>
 
 <style scoped></style>

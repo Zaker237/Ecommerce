@@ -3,7 +3,7 @@ import {computed, onMounted, Ref, ref} from "vue";
 import { useOrderStore } from "../../store/order.store";
 import Spinner from "../../components/core/Spinner.vue";
 import {PRODUCTS_PER_PAGE} from "../../constants";
-import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
+import TableHeaderCell from "../../components/core/table/TableHeaderCell.vue";
 import { IOrder } from "../../types/order";
 import { ILink, IMetaLink } from "../../types/commons";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";

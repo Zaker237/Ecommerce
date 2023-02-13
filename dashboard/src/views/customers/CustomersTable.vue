@@ -1,44 +1,46 @@
 <script setup lang="ts">
 import {computed, onMounted, ref, Ref} from "vue";
-import { useUserStore } from "../../store/user.store";
+import { useCustomerStore } from "../../store/customer.store";
+import { useCountryStore } from "../../store/country.store";
 import Spinner from "../../components/core/Spinner.vue";
-import {USERS_PER_PAGE} from "../../constants";
-import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
-import { IUser } from "../../types/user";
+import {CUSTOMERS_PER_PAGE} from "../../constants";
+import TableHeaderCell from "../../components/core/table/TableHeaderCell.vue";
+import { ICustomer } from "../../types/customer";
 import { ILink, IMetaLink } from "../../types/commons";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {EllipsisVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/outline'
-import UserModal from "./UserModal.vue";
 
-const userStore = useUserStore();
+const customerStore = useCustomerStore();
+const countryStore = useCountryStore();
 
-const perPage: Ref<number> = ref(USERS_PER_PAGE);
+const perPage: Ref<number> = ref(CUSTOMERS_PER_PAGE);
 const search: Ref<string> = ref('');
-const users = computed(() => userStore.items);
-const usersLoading = computed(() => userStore.loading);
-const usersLinks = computed(() => userStore.links);
-const usersMeta = computed(() => userStore.meta);
+const customers = computed(() => customerStore.items);
+const customersLoading = computed(() => customerStore.loading);
+const customersLinks = computed(() => customerStore.links);
+const customersMeta = computed(() => customerStore.meta);
 const sortField: Ref<string> = ref('updated_at');
-const sortDirection: Ref<string> = ref('desc')
-const user = ref({})
-const showUserModal: Ref<boolean> = ref(false);
-const emit = defineEmits(['clickEdit']);
+const sortDirection: Ref<string> = ref('desc');
+
+const customer = ref({});
+const showCustomerModal: Ref<boolean> = ref(false);
 
 onMounted(() => {
-  getUsers();
-})
+  getCustomers();
+  getCountries();
+});
 
 const getForPage = (ev: any, link: IMetaLink) => {
   ev.preventDefault();
   if (!link.url || link.active) {
     return;
   }else{
-    userStore.getItems({url: link.url})
+    customerStore.getItems({url: link.url})
   }
 }
 
-const getUsers = (url = null) => {
-  userStore.getItems({
+const getCustomers = (url = null) => {
+  customerStore.getItems({
     url: url,
     search: search.value,
     per_page: perPage.value,
@@ -47,7 +49,11 @@ const getUsers = (url = null) => {
   });
 }
 
-const sortUsers = (field: string) => {
+const getCountries = (url = null) => {
+  countryStore.getItems();
+}
+
+const sortCustomers = (field: string) => {
   if (field === sortField.value) {
     if (sortDirection.value === 'desc') {
       sortDirection.value = 'asc'
@@ -58,26 +64,22 @@ const sortUsers = (field: string) => {
     sortField.value = field;
     sortDirection.value = 'asc'
   }
-  getUsers();
+  getCustomers()
 }
 
 const showAddNewModal = () => {
-  showUserModal.value = true
+  showCustomerModal.value = true
 }
 
-const deleteUser = (user: IUser) => {
-  if (!confirm(`Are you sure you want to delete the user?`)) {
+const deleteCustomer = (customer: ICustomer) => {
+  if (!confirm(`Are you sure you want to delete the customer?`)) {
     return
   }
-  if (user.id){
-    userStore.removeItem(user.id);
+  if (customer.id){
+    customerStore.removeItem(customer.id);
   }else{
     return;
   }
-}
-
-const editUser = (u: IUser) => {
-  emit('clickEdit', u);
 }
 </script>
 
@@ -86,20 +88,26 @@ const editUser = (u: IUser) => {
     <div class="flex justify-between border-b-2 pb-3">
       <div class="flex items-center">
         <span class="whitespace-nowrap mr-3">Per Page</span>
-        <select @change="getUsers(null)" v-model="perPage"
-                class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+        <select
+					@change="getCustomers(null)"
+					v-model="perPage"
+          class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+				>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{ usersMeta.total }} users</span>
+        <span class="ml-3">Found {{ customersMeta.total }} customers</span>
       </div>
       <div>
-        <input v-model="search" @change="getUsers(null)"
-               class="appearance-none relative block w-48 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-               placeholder="Type to Search users">
+        <input
+					v-model="search"
+					@change="getCustomers(null)"
+          class="appearance-none relative block w-48 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+          placeholder="Type to Search customers"
+				>
       </div>
     </div>
 
@@ -107,47 +115,61 @@ const editUser = (u: IUser) => {
       <thead>
       <tr>
         <TableHeaderCell field="id" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortUsers('id')">
+                         @click="sortCustomers('id')">
           ID
         </TableHeaderCell>
         <TableHeaderCell field="name" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortUsers('email')">
+                         @click="sortCustomers('name')">
           Name
         </TableHeaderCell>
         <TableHeaderCell field="email" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortUsers('email')">
+                         @click="sortCustomers('email')">
           Email
         </TableHeaderCell>
+        <TableHeaderCell field="phone" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('phone')">
+          Phone
+        </TableHeaderCell>
+        <TableHeaderCell field="status" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('status')">
+          Status
+        </TableHeaderCell>
         <TableHeaderCell field="created_at" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortUsers('created_at')">
-          Create Date
+                         @click="sortCustomers('created_at')">
+          Register Date
         </TableHeaderCell>
         <TableHeaderCell field="actions">
           Actions
         </TableHeaderCell>
       </tr>
       </thead>
-      <tbody v-if="usersLoading || !users.length">
+      <tbody v-if="customersLoading || !customers.length">
       <tr>
-        <td colspan="6">
-          <Spinner v-if="usersLoading"/>
+        <td colspan="7">
+          <Spinner v-if="customersLoading"/>
           <p v-else class="text-center py-8 text-gray-700">
-            There are no users
+            There are no customers
           </p>
         </td>
       </tr>
       </tbody>
       <tbody v-else>
-      <tr v-for="(user, index) of users">
-        <td class="border-b p-2 ">{{ user.id }}</td>
+      <tr v-for="(customer, index) of customers">
+        <td class="border-b p-2 ">{{ customer.id }}</td>
         <td class="border-b p-2 ">
-         {{ user.name }}
+         {{ customer.first_name }} {{ customer.last_name }}
         </td>
         <td class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
-          {{ user.email }}
+          {{ customer.email }}
         </td>
         <td class="border-b p-2">
-          {{ user.created_at }}
+          {{ customer.phone }}
+        </td>
+        <td class="border-b p-2">
+          {{ customer.status }}
+        </td>
+        <td class="border-b p-2">
+          {{ customer.created_at }}
         </td>
         <td class="border-b p-2 ">
           <Menu as="div" class="relative inline-block text-left">
@@ -174,12 +196,12 @@ const editUser = (u: IUser) => {
               >
                 <div class="px-1 py-1">
                   <MenuItem v-slot="{ active }">
-                    <button
+                    <router-link
+                      :to="{name: 'app.customers.view', params: {id: customer.id}}"
                       :class="[
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                       ]"
-                      @click="editUser(user)"
                     >
                       <PencilIcon
                         :active="active"
@@ -187,7 +209,7 @@ const editUser = (u: IUser) => {
                         aria-hidden="true"
                       />
                       Edit
-                    </button>
+                    </router-link>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
                     <button
@@ -195,7 +217,7 @@ const editUser = (u: IUser) => {
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                       ]"
-                      @click="deleteUser(user)"
+                      @click="deleteCustomer(customer)"
                     >
                       <TrashIcon
                         :active="active"
@@ -214,18 +236,18 @@ const editUser = (u: IUser) => {
       </tbody>
     </table>
 
-    <div v-if="!usersLoading" class="flex justify-between items-center mt-5">
-      <div v-if="users.length">
-        Showing from {{ usersMeta.from }} to {{ usersMeta.to }}
+    <div v-if="!customersLoading" class="flex justify-between items-center mt-5">
+      <div v-if="customers.length">
+        Showing from {{ customersMeta.from }} to {{ customersMeta.to }}
       </div>
       <nav
-        v-if="usersMeta.total && usersMeta.per_page && usersMeta.total > usersMeta.limit"
+        v-if="customersMeta.total && customersMeta.per_page && customersMeta.total > customersMeta.limit"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >
         <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
         <a
-          v-for="(link, i) of usersMeta.links"
+          v-for="(link, i) of customersMeta.links"
           :key="i"
           :disabled="!link.url"
           href="#"
@@ -237,7 +259,7 @@ const editUser = (u: IUser) => {
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md' : '',
-              usersMeta.links && i === usersMeta.links.length - 1 ? 'rounded-r-md' : '',
+              customersMeta.links && i === customersMeta.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
           v-html="link.label"
