@@ -85,8 +85,8 @@ class DashboardController extends Controller
     {
         return OrderResource::collection(
             Order::query()
-                ->select(['o.id', 'o.total_price', 'o.created_at', DB::raw('COUNT(oi.id) AS items'),
-                    'c.id', 'c.first_name', 'c.last_name'])
+                ->select(['o.id AS order_id', 'o.total_price', 'o.created_at', DB::raw('COUNT(oi.id) AS items'),
+                    'c.id', 'c.first_name', 'c.last_name', 'c.id AS user_id'])
                 ->from('orders AS o')
                 ->join('order_items AS oi', 'oi.order_id', '=', 'o.id')
                 ->join('customers AS c', 'c.id', '=', 'o.created_by')
