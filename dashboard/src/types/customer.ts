@@ -1,27 +1,27 @@
 import { ILink, IMeta} from "./commons";
 
 export interface IShippingAddress {
-	id: number | null;
+	id: number;
 	address1: string;
 	address2: string;
 	city: string;
 	state: string;
 	zipcode: number;
-	country: string;
+	country_code: string;
 }
 
 export interface IBillingAddress {
-	id: number | null;
+	id: number;
 	address1: string;
 	address2: string;
 	city: string;
 	state: string;
 	zipcode: number;
-	country: string;
+	country_code: string;
 }
 
 export interface ICustomer {
-	id: number | null;
+	id: number;
 	first_name: string;
   last_name: string;
   email: string;
@@ -68,8 +68,8 @@ export type GetCustomerListResponse = {
 
 export type RootCustomerState = {
   customers: ICustomer[];
-  links: ILink;
-  meta: IMeta;
+  links: ILink | null;
+  meta: IMeta | null;
   loading: boolean,
   error: null | string
 };

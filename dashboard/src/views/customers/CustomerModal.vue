@@ -12,8 +12,10 @@ const customerStore = useCustomerStore();
 const countryStore = useCountryStore();
 
 const customer: Ref<ICustomer> = ref({
-  billingAddress: {},
-  shippingAddress: {}
+  id: 0, first_name: "", last_name: "", email: "",
+  phone: "", status: "", created_at:"", updated_at: "",
+  billingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""},
+  shippingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""}
 });
 
 const loading = ref(false)
@@ -54,6 +56,8 @@ onUpdated(() => {
     email: props.customer.email,
     phone: props.customer.phone,
     status: props.customer.status,
+    created_at: props.customer.created_at,
+    updated_at: props.customer.updated_at,
     billingAddress: {
       ...props.customer.billingAddress
     },
@@ -146,7 +150,7 @@ const onSubmit = async () => {
                         <CustomInput v-model="customer.billingAddress.zipcode" label="Zip Code"/>
 
                         <CustomInput type="select" :select-options="countries" v-model="customer.billingAddress.country_code" label="Country"/>
-                        <CustomInput v-if="!billingCountry.states" v-model="customer.billingAddress.state" label="State"/>
+                        <CustomInput v-if="!billingCountry?.states" v-model="customer.billingAddress.state" label="State"/>
                         <CustomInput v-else type="select" :select-options="billingStateOptions" v-model="customer.billingAddress.state" label="State"/>
                       </div>
                     </div>
@@ -160,7 +164,7 @@ const onSubmit = async () => {
                         <CustomInput  v-model="customer.shippingAddress.city" label="City"/>
                         <CustomInput  v-model="customer.shippingAddress.zipcode" label="Zip Code"/>
                         <CustomInput type="select" :select-options="countries" v-model="customer.shippingAddress.country_code" label="Country"/>
-                        <CustomInput v-if="!shippingCountry.states" v-model="customer.shippingAddress.state" label="State"/>
+                        <CustomInput v-if="!shippingCountry?.states" v-model="customer.shippingAddress.state" label="State"/>
                         <CustomInput v-else type="select" :select-options="shippingStateOptions" v-model="customer.shippingAddress.state" label="State"/>
                       </div>
                     </div>

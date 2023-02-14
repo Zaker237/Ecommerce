@@ -7,9 +7,15 @@ import CustomersTable from "./CustomersTable.vue";
 const customerStore = useCustomerStore();
 
 const DEFAULT_CUSTOMER = {
+	id: 0, first_name: "", last_name: "", email: "",
+  phone: "", status: "", created_at:"", updated_at: "",
+  billingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""},
+  shippingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""}
 }
 
 const customers = computed(() => customerStore.items);
+
+const customerModel: Ref<ICustomer> = ref(DEFAULT_CUSTOMER); 
 const showCustomerModal: Ref<Boolean> = ref(false);
 
 const showAddNewModal = () => {
@@ -17,8 +23,9 @@ const showAddNewModal = () => {
 }
 
 const editCustomer = async (customer: ICustomer) => {
-  const data: ICustomer = await customerStore.getItem(customer.id);
+  const data: ICustomer | null = await customerStore.getItem(String(customer.id));
 	console.log(data);
+	if(!data) return
 	//customerModel.value = {...data};
 	customerModel.value = {
 		id: data.id,
@@ -32,16 +39,6 @@ const editCustomer = async (customer: ICustomer) => {
 		billingAddress: data.billingAddress,
 		shippingAddress: data.shippingAddress
 	};
-	/*customerModel.value.id = data.id;
-	customerModel.value.first_name = data.first_name;
-	customerModel.value.last_name = data.last_name;
-	customerModel.value.email = data.email;
-	customerModel.value.phone = data.phone;
-	customerModel.value.status = data.status;
-	customerModel.value.created_at = data.created_at;
-	customerModel.value.updated_at = data.updated_at;
-	customerModel.value.billingAddress = data.billingAddress;
-	customerModel.value.shippingAddress = data.shippingAddress;*/
 	
 	console.log(customerModel.value);
   showAddNewModal();

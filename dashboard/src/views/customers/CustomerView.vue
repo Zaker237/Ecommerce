@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, Ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import CustomInput from "../../components/core/CustomInput.vue";
 import { ICustomer } from "../../types/customer";
@@ -13,9 +13,11 @@ const router = useRouter();
 const route = useRoute()
 const title = ref('');
 
-const customer = ref({
-  billingAddress: {},
-  shippingAddress: {}
+const customer: Ref<ICustomer> = ref({
+  id: 0, first_name: "", last_name: "", email: "",
+  phone: "", status: "", created_at:"", updated_at: "",
+  billingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""},
+  shippingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""}
 })
 
 const countries = computed(() => countryStore.items.map(c => ({key: c.code, text: c.name})));
@@ -45,10 +47,12 @@ const onSubmit = async () => {
 }
 
 onMounted(async () => {
-	const data = await customerStore.getItem(route.params.id);
+	const data: ICustomer | null = await customerStore.getItem(String(route.params.id));
   await countryStore.getItems();
-  customer.value = data
-  title.value = `Update customer: "${data.first_name} ${data.last_name}"`
+  if(data){
+    customer.value = data
+    title.value = `Update customer: "${data.first_name} ${data.last_name}"`
+  }
 });
 
 </script>
@@ -77,7 +81,7 @@ onMounted(async () => {
 
               <CustomInput type="select" :select-options="countries" v-model="customer.billingAddress.country_code"
                            label="Country"/>
-              <CustomInput v-if="!billingCountry.states" v-model="customer.billingAddress.state" label="State"/>
+              <CustomInput v-if="!billingCountry?.states" v-model="customer.billingAddress.state" label="State"/>
               <CustomInput v-else type="select" :select-options="billingStateOptions"
                            v-model="customer.billingAddress.state" label="State"/>
             </div>
@@ -93,7 +97,7 @@ onMounted(async () => {
               <CustomInput v-model="customer.shippingAddress.zipcode" label="Zip Code"/>
               <CustomInput type="select" :select-options="countries" v-model="customer.shippingAddress.country_code"
                            label="Country"/>
-              <CustomInput v-if="!shippingCountry.states" v-model="customer.shippingAddress.state" label="State"/>
+              <CustomInput v-if="!shippingCountry?.states" v-model="customer.shippingAddress.state" label="State"/>
               <CustomInput v-else type="select" :select-options="shippingStateOptions"
                            v-model="customer.shippingAddress.state" label="State"/>
             </div>

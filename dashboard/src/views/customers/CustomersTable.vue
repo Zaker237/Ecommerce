@@ -99,7 +99,7 @@ const deleteCustomer = (customer: ICustomer) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{ customersMeta.total }} customers</span>
+        <span class="ml-3">Found {{ customersMeta?.total }} customers</span>
       </div>
       <div>
         <input
@@ -238,10 +238,10 @@ const deleteCustomer = (customer: ICustomer) => {
 
     <div v-if="!customersLoading" class="flex justify-between items-center mt-5">
       <div v-if="customers.length">
-        Showing from {{ customersMeta.from }} to {{ customersMeta.to }}
+        Showing from {{ customersMeta?.from }} to {{ customersMeta?.to }}
       </div>
       <nav
-        v-if="customersMeta.total && customersMeta.per_page && customersMeta.total > customersMeta.limit"
+        v-if="customersMeta?.total && customersMeta?.per_page && customersMeta.total > customersMeta.per_page"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >

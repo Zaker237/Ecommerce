@@ -15,8 +15,8 @@ export const useCustomerStore = defineStore({
 	id: "customers",
 	state: () => ({
 		customers: [],
-		links: [],
-  	meta: [],
+		links: null,
+  	meta: null,
 		loading: false,
 		error: null
 	} as RootCustomerState),
@@ -55,7 +55,7 @@ export const useCustomerStore = defineStore({
 			}
 		},
 
-		async getItem(id: number) {
+		async getItem(id: string): Promise<ICustomer | null> {
 			this.loading = true;
 			try {
 				const { data, status } = await axios.get<ICustomer>(
@@ -75,7 +75,7 @@ export const useCustomerStore = defineStore({
 				} else {
 					this.error = "An unexpected error occurred";
 				}
-				return {}
+				return null;
 			} finally {
 				this.loading = false;
 			}
