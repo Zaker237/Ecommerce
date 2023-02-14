@@ -1,41 +1,41 @@
 import { ILink, IMeta} from "./commons";
 
 export interface IShippingAddress {
-	id: number | null;
+	id: number;
 	address1: string;
 	address2: string;
 	city: string;
 	state: string;
 	zipcode: number;
-	country: string;
+	country_code: string;
 }
 
 export interface IBillingAddress {
-	id: number | null;
+	id: number;
 	address1: string;
 	address2: string;
 	city: string;
 	state: string;
 	zipcode: number;
-	country: string;
+	country_code: string;
 }
 
 export interface IProduct {
-	id: number | null;
+	id: number;
   slug: string;
   title: string;
   image: string;
 }
 
 export interface IOrderItem {
-	id: number | null;
+	id: number;
   unit_price: number;
 	quantity: number;
 	product: IProduct;
 }
 
 export interface ICustomer {
-	id: number| null; 
+	id: number; 
   email: string;
   first_name: string;
   last_name: string;
@@ -45,29 +45,29 @@ export interface ICustomer {
 }
 
 export interface ICustomerList {
-	id: number| null;
+	id: number;
   first_name: string;
   last_name: string;
 }
 
 export interface IOrder {
-  id: number | null;
+  id: number;
   status: string;
 	total_price: number;
-	items: IOrderItem[] | null;
-  costumer: ICustomer[];
-  created_at: string | null;
-  updated_at: string | null;
+	items: IOrderItem[];
+  customer: ICustomer;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IOrderList {
-  id: number | null;
+  id: number;
   status: string;
 	total_price: number;
 	number_of_items: number;
 	customer: ICustomerList;
-  created_at: string | null;
-  updated_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface OrderProps {
@@ -94,9 +94,9 @@ export type GetOrderListResponse = {
 
 export type RootOrderState = {
 	orders: IOrder[];
-	statuse:string[];
-  links: ILink;
-  meta: IMeta;
+	statuse: string[];
+  links: ILink | null;
+  meta: IMeta | null;
   loading: boolean,
   error: null | string
 };

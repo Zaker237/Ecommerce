@@ -5,7 +5,7 @@ import Spinner from "../../components/core/Spinner.vue";
 import {PRODUCTS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/table/TableHeaderCell.vue";
 import { IOrder } from "../../types/order";
-//import { ILink, IMetaLink } from "../../types/commons";
+import { ILink, IMetaLink } from "../../types/commons";
 //import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 //import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
 import OrderStatus from "./OrderStatus.vue";
@@ -22,7 +22,7 @@ const sortField: Ref<string> = ref('updated_at');
 const sortDirection: Ref<string> = ref('desc')
 const order = ref({})
 const showOrderModal: Ref<boolean> = ref(false);
-const emit = defineEmits(['clickEdit']);
+const emit = defineEmits(['clickEdit', 'clickShow']);
 
 onMounted(() => {
   getOrders();
@@ -69,7 +69,7 @@ const deleteOrder = (order: IOrder) => {
   if (!confirm(`Are you sure you want to delete the order?`)) {
     return
   }
-  if (product.id){
+  if (order.id){
     orderStore.removeItem(order.id);
   }else{
     return;
@@ -96,7 +96,7 @@ const showOrder = (order: IOrder) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{ ordersMeta.total }} orders</span>
+        <span class="ml-3">Found {{ ordersMeta?.total }} orders</span>
       </div>
       <div>
         <input
@@ -179,10 +179,10 @@ const showOrder = (order: IOrder) => {
 
     <div v-if="!ordersLoading" class="flex justify-between items-center mt-5">
       <div v-if="orders.length">
-        Showing from {{ ordersMeta.from}} to {{ ordersMeta.to }}
+        Showing from {{ ordersMeta?.from}} to {{ ordersMeta?.to }}
       </div>
       <nav
-        v-if="ordersMeta.total && ordersMeta.per_page && ordersMeta?.total > ordersMeta.per_page"
+        v-if="ordersMeta?.total && ordersMeta.per_page && ordersMeta?.total > ordersMeta.per_page"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >

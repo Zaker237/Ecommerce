@@ -11,8 +11,8 @@ export const useOrderStore = defineStore({
 	state: () => ({
 		orders: [],
 		statuse: [],
-		links: [],
-  	meta: [],
+		links: null,
+  	meta: null,
 		loading: false,
 		error: null
 	} as RootOrderState),
@@ -51,7 +51,7 @@ export const useOrderStore = defineStore({
 			}
 		},
 
-		async getItem(id: number) {
+		async getItem(id: string): Promise<IOrder | null> {
 			this.loading = true;
 			try {
 				const { data, status } = await axios.get<IOrder>(
@@ -71,7 +71,7 @@ export const useOrderStore = defineStore({
 				} else {
 					this.error = "An unexpected error occurred";
 				}
-				return {}
+				return null;
 			} finally {
 				this.loading = false;
 			}

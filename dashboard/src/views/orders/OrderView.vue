@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, Ref} from "vue";
 import { useOrderStore } from "../../store/order.store";
 import {useRoute} from "vue-router";
 import { IOrder } from "../../types/order";
@@ -7,13 +7,24 @@ import OrderStatus from "./OrderStatus.vue";
 
 const orderStore = useOrderStore();
 
+
+
 const route = useRoute();
-const order = ref({});
+const order: Ref<IOrder> = ref({
+  id: 0, status: "", total_price:0, created_at:"", updated_at: "",
+  items: [],
+  customer:{
+    id: 0, email: "", first_name: "", last_name: "", phone: "",
+    billingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""},
+    shippingAddress: {id: 0, address1: "", address2: "", city: "", state: "", zipcode: 0, country_code: ""}
+  }
+});
 const orderStatuses = computed(() => orderStore.statuse);
 
 onMounted(async () => {
-  const data = await orderStore.getItem(route.params.id);
-  order.value = {...data};
+  const data: IOrder | null = await orderStore.getItem(String(route.params.id));
+  if(!data) return
+  order.value = data;
   await orderStore.getOrderStatuse();
 })
 
@@ -86,9 +97,9 @@ const onStatusChange = () => {
         <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">Billing Address</h2>
         <!--  Billing Address Details-->
         <div>
-          {{ order?.customer?.billingAddress?.address1 }}, {{ order?.customer?.billingAddress?.address2 }} <br>
-          {{ order?.customer?.billingAddress?.city }}, {{ order?.customer?.billingAddress?.zipcode }} <br>
-          {{ order?.customer?.billingAddress?.state }}, {{ order?.customer?.billingAddress?.country }} <br>
+          {{ order.customer.billingAddress.address1 }}, {{ order.customer.billingAddress.address2 }} <br>
+          {{ order.customer.billingAddress.city }}, {{ order.customer.billingAddress.zipcode }} <br>
+          {{ order.customer.billingAddress.state }}, {{ order.customer.billingAddress.country_code }} <br>
         </div>
         <!--/  Billing Address Details-->
       </div>
@@ -96,9 +107,9 @@ const onStatusChange = () => {
         <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">Shipping Address</h2>
         <!--  Shipping Address Details-->
         <div>
-          {{ order?.customer?.shippingAddress?.address1 }}, {{ order?.customer?.shippingAddress?.address2 }} <br>
-          {{ order?.customer?.shippingAddress?.city }}, {{ order?.customer?.shippingAddress?.zipcode }} <br>
-          {{ order?.customer?.shippingAddress?.state }}, {{ order?.customer?.shippingAddress?.country }} <br>
+          {{ order.customer.shippingAddress.address1 }}, {{ order.customer?.shippingAddress.address2 }} <br>
+          {{ order.customer.shippingAddress.city }}, {{ order.customer?.shippingAddress.zipcode }} <br>
+          {{ order.customer.shippingAddress.state }}, {{ order.customer?.shippingAddress.country_code }} <br>
         </div>
         <!--/  Shipping Address Details-->
       </div>
@@ -122,8 +133,8 @@ const onStatusChange = () => {
               </h3>
             </div>
             <div class="flex justify-between items-center">
-              <div class="flex items-center">Qty: {{ item?.quantity }}</div>
-              <span class="text-lg font-semibold"> ${{ item?.unit_price }} </span>
+              <div class="flex items-center">Qty: {{ item.quantity }}</div>
+              <span class="text-lg font-semibold"> ${{ item.unit_price }} </span>
             </div>
           </div>
         </div>

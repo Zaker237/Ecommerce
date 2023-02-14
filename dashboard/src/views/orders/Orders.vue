@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {onMounted} from "vue";
 import OrdersTable from "./OrdersTable.vue";
 import { useOrderStore } from "../../store/order.store";
 import { IOrder } from "../../types/order";
 
 const orderStore = useOrderStore();
 
-const orders = computed(() => orderStore.items);
+//const orders = computed(() => orderStore.items);
 
 onMounted(async () => {
   await orderStore.getItems({});
