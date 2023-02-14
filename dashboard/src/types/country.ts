@@ -2,9 +2,9 @@ import { ILink, IMeta} from "./commons";
 
 
 export interface ICountry {
-  code: number | null;
+  code: string;
   name: string;
-  states: null | object;
+  states: string | object;
 }
 
 export type GetCountriesResponse = {

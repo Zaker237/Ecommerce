@@ -1,18 +1,18 @@
 import { ICustomer } from "./customer";
 
 export interface IDateOptions {
-	key: String;
-	text: Number;
+	key: string;
+	text: number;
 }
 
 export interface IOrder{
-	id: Number;
-  total_price: Number;
-  created_at: String;
+	id: number;
+  total_price: number;
+  created_at: string;
   items: any[];
-  user_id: Number;
-  first_name: String;
-  last_name: String;
+  user_id: number;
+  first_name: string;
+  last_name: string;
 }
 
 export interface IOrdersByCountry {
@@ -28,19 +28,19 @@ export interface ILatestOrders {
 }
 
 export type RootDashboardState = {
-	customerNumber: Number;
-	productNumber: Number;
-	paidOrderNumber: Number;
-	totalIncomeNumber: Number;
+	customernumber: number;
+	productnumber: number;
+	paidOrdernumber: number;
+	totalIncomenumber: number;
 	orders: IOrder[];
 	countryOrders: IOrder[];
 	customers: ICustomer[];
-	customersCountLoading: Boolean;
-  productsCountLoading: Boolean;
-  paidOrdersLoading: Boolean;
-  totalIncomeLoading: Boolean;
-  ordersByCountryLoading: Boolean;
-  latestCustomersLoading: Boolean;
-	latestOrdersLoading: Boolean;
+	customersCountLoading: boolean;
+  productsCountLoading: boolean;
+  paidOrdersLoading: boolean;
+  totalIncomeLoading: boolean;
+  ordersByCountryLoading: boolean;
+  latestCustomersLoading: boolean;
+	latestOrdersLoading: boolean;
 	error: null | string;
 };
