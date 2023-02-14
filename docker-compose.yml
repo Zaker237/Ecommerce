@@ -1,0 +1,77 @@
+version: "3.7"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: shop-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ecommerce
+      MYSQL_ROOT_PASSWORD: ecommerce
+      MYSQL_PASSWORD: ecommerce
+      MYSQL_USER: ecommerce
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+    networks:
+      - shop
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8001:80
+    networks:
+      - shop
+
+  shop:
+    build:
+      args:
+        user: alex
+        uid: 1000
+      context: ./shop/
+      dockerfile: Dockerfile
+    image: shop-app
+    container_name: shop-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./shop/:/var/www
+    networks:
+      - shop
+
+  nginx-shop:
+    image: nginx:1.17-alpine
+    container_name: shop-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - shop
+
+  dashboard:
+    container_name: dashboard
+    build:
+      context: ./dashboard/
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    ports:
+      - "8002:80"
+    networks:
+      - shop
+
+networks:
+  shop:
+    driver: bridge
