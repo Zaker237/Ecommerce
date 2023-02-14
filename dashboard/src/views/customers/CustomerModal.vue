@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, onUpdated, ref, Ref} from 'vue'
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
-import {ExclamationIcon} from '@heroicons/vue/outline'
+// import {ExclamationIcon} from '@heroicons/vue/24/outline'
 import CustomInput from "../../components/core/CustomInput.vue";
 import { ICustomer } from "../../types/customer";
 import { useCustomerStore } from "../../store/customer.store";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LockClosedIcon } from "@heroicons/vue/20/solid";
+import { LockClosedIcon } from "@heroicons/vue/24/solid";
 import GuestLayout from "../components/GuestLayout.vue"
 </script>
 

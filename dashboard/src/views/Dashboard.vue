@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import {UserIcon} from '@heroicons/vue/24/outline'
 import DoughnutChart from '../components/core/charts/Doughnut.vue'
-import axiosClient from "../axios.js";
 import {onMounted, ref, Ref, computed} from "vue";
 import Spinner from "../components/core/Spinner.vue";
 import { IDateOptions } from "../types/dashboard";
-import { ICustomer } from "./customer";
-import { IOrder } from "./order";
+import { ICustomer } from "../types/customer";
+import { IOrder } from "../types/order";
 import CustomInput from "../components/core/CustomInput.vue";
 import { useDashboardStore } from "../store/dashboard.store";
 import { useReportStore } from "../store/report.store";

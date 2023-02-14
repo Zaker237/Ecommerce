@@ -5,9 +5,9 @@ import Spinner from "../../components/core/Spinner.vue";
 import {PRODUCTS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/table/TableHeaderCell.vue";
 import { IOrder } from "../../types/order";
-import { ILink, IMetaLink } from "../../types/commons";
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
+//import { ILink, IMetaLink } from "../../types/commons";
+//import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+//import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
 import OrderStatus from "./OrderStatus.vue";
 
 const orderStore = useOrderStore();
@@ -16,7 +16,7 @@ const perPage: Ref<number> = ref(PRODUCTS_PER_PAGE);
 const search: Ref<string> = ref('');
 const orders = computed(() => orderStore.items);
 const ordersLoading = computed(() => orderStore.loading);
-const ordersLinks = computed(() => orderStore.links);
+//const ordersLinks = computed(() => orderStore.links);
 const ordersMeta = computed(() => orderStore.meta);
 const sortField: Ref<string> = ref('updated_at');
 const sortDirection: Ref<string> = ref('desc')

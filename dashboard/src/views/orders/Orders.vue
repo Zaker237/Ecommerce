@@ -12,8 +12,8 @@ onMounted(async () => {
   await orderStore.getItems({});
 });
 
-const showOrder = (p) => {
-
+const showOrder = (order: IOrder) => {
+  console.log(order);
 }
 </script>
 

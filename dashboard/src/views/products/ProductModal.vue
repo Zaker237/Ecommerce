@@ -2,9 +2,9 @@
 import { computed, onUpdated, ref } from "vue";
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
 // import { IProduct } from "../../types/product";
-import { ExclamationIcon } from "@heroicons/vue/outline";
+// import { ExclamationIcon } from "@heroicons/vue/24/outline";
 import CustomInput from "../../components/core/CustomInput.vue";
-import { useProductStore } from "../../store/product.store.ts";
+import { useProductStore } from "../../store/product.store";
 import Spinner from "../../components/core/Spinner.vue";
 
 const productStore = useProductStore();

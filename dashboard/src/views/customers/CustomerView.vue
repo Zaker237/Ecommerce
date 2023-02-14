@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import store from "../../store";
 import {useRoute, useRouter} from "vue-router";
 import CustomInput from "../../components/core/CustomInput.vue";
 import { ICustomer } from "../../types/customer";
