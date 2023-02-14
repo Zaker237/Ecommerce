@@ -1,22 +1,23 @@
 import { ILink, IMeta} from "./commons";
 
 export interface IProduct {
-  id: number | null;
+  id: number;
   title: string;
 	slug: string;
-	description: string | null;
-  image_url?: string;
+	description?: string;
+  image?: string;
   price: number;
   published: boolean;
-  created_at: string | null;
-  updated_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IProductList {
-  id: number | null;
+  id: number;
   title: string;
+  image: string;
   price: number;
-  updated_at: string | null;
+  updated_at: string;
 }
 
 export interface ProductProps {
@@ -43,8 +44,8 @@ export type GetProductListResponse = {
 
 export type RootProductState = {
   products: IProduct[];
-  links: ILink;
-  meta: IMeta;
+  links: ILink | null;
+  meta: IMeta | null;
   loading: boolean,
   error: null | string
 };

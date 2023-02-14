@@ -97,7 +97,7 @@ const editProduct = (p: IProduct) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{productsMeta.total}} products</span>
+        <span class="ml-3">Found {{productsMeta?.total}} products</span>
       </div>
       <div>
         <input
@@ -173,7 +173,7 @@ const editProduct = (p: IProduct) => {
 			>
         <td class="border-b p-2 ">{{ product.id }}</td>
         <td class="border-b p-2 ">
-          <img class="w-16 h-16 object-cover" :src="product.image_url" :alt="product.title">
+          <img class="w-16 h-16 object-cover" :src="product.image" :alt="product.title">
         </td>
         <td class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
           {{ product.title }}
@@ -252,10 +252,10 @@ const editProduct = (p: IProduct) => {
 
     <div v-if="!productsLoading" class="flex justify-between items-center mt-5">
       <div v-if="products.length">
-        Showing from {{ productsMeta.from}} to {{ productsMeta.to }}
+        Showing from {{ productsMeta?.from}} to {{ productsMeta?.to }}
       </div>
       <nav
-        v-if="productsMeta.total && productsMeta.per_page && productsMeta?.total > productsMeta.per_page"
+        v-if="productsMeta?.total && productsMeta.per_page && productsMeta?.total > productsMeta.per_page"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >

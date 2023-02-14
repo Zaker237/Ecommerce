@@ -10,8 +10,8 @@ export const useProductStore = defineStore({
 	id: "products",
 	state: () => ({
 		products: [],
-		links: [],
-  	meta: [],
+		links: null,
+  	meta: null,
 		loading: false,
 		error: null
 	} as RootProductState),
@@ -50,7 +50,7 @@ export const useProductStore = defineStore({
 			}
 		},
 
-		async getItem(id: number) {
+		async getItem(id: string): Promise<IProduct | null> {
 			this.loading = true;
 			try {
 				const { data, status } = await axios.get<IProduct>(
@@ -70,7 +70,7 @@ export const useProductStore = defineStore({
 				} else {
 					this.error = "An unexpected error occurred";
 				}
-				return {}
+				return null;
 			} finally {
 				this.loading = false;
 			}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, Ref} from "vue";
 import ProductModal from "./ProductModal.vue";
 import ProductsTable from "./ProductsTable.vue";
 import { useProductStore } from "../../store/product.store";
@@ -8,14 +8,11 @@ import { IProduct } from "../../types/product";
 const productStore = useProductStore();
 
 const DEFAULT_PRODUCT = {
-  id: "",
-  title: "",
-  description: "",
-  image: "",
-  price: ""
+  id: 0, title: "", slug: "", description: "",
+  image: "", price: 0, published: false, created_at: "", updated_at: ""
 }
 const products = computed(() => productStore.products);
-const productModel = ref({...DEFAULT_PRODUCT})
+const productModel: Ref<IProduct> = ref({...DEFAULT_PRODUCT})
 const showProductModal = ref(false);
 
 onMounted(async () => {
@@ -26,9 +23,10 @@ const showAddNewModal = () => {
   showProductModal.value = true
 }
 
-const editProduct = async (p: IProduct) => {
-  const prod = await productStore.getItem(p.id);
-  productModel.value = prod;
+const editProduct = async (product: IProduct) => {
+  const data: IProduct | null = await productStore.getItem(String(product.id));
+  if(!data) return
+  productModel.value = data;
   showAddNewModal();
 }
 

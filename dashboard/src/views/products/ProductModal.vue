@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, onUpdated, ref } from "vue";
+import { computed, onUpdated, ref, Ref} from "vue";
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
-// import { IProduct } from "../../types/product";
+import { IProduct } from "../../types/product";
 // import { ExclamationIcon } from "@heroicons/vue/24/outline";
 import CustomInput from "../../components/core/CustomInput.vue";
 import { useProductStore } from "../../store/product.store";
@@ -19,12 +19,16 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "close"])
 
-const product = ref({
+const product: Ref<IProduct> = ref({
   id: props.product.id,
   title: props.product.title,
+  slug: props.product.slug,
   image: props.product.image,
   description: props.product.description,
-  price: props.product.price
+  price: props.product.price,
+  published: props.product.published,
+  created_at: props.product.created_at,
+  updated_at: props.product.updated_at
 });
 
 const loading = ref(false);
@@ -38,9 +42,13 @@ onUpdated(() => {
   product.value = {
     id: props.product.id,
     title: props.product.title,
+    slug: props.product.slug,
     image: props.product.image,
     description: props.product.description,
-    price: props.product.price
+    price: props.product.price,
+    published: props.product.published,
+    created_at: props.product.created_at,
+    updated_at: props.product.updated_at
   }
 });
 
