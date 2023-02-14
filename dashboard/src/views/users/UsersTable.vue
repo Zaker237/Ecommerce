@@ -94,7 +94,7 @@ const editUser = (u: IUser) => {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{ usersMeta.total }} users</span>
+        <span class="ml-3">Found {{ usersMeta?.total }} users</span>
       </div>
       <div>
         <input v-model="search" @change="getUsers(null)"
@@ -216,10 +216,10 @@ const editUser = (u: IUser) => {
 
     <div v-if="!usersLoading" class="flex justify-between items-center mt-5">
       <div v-if="users.length">
-        Showing from {{ usersMeta.from }} to {{ usersMeta.to }}
+        Showing from {{ usersMeta?.from }} to {{ usersMeta?.to }}
       </div>
       <nav
-        v-if="usersMeta.total && usersMeta.per_page && usersMeta.total > usersMeta.limit"
+        v-if="usersMeta?.total && usersMeta.per_page && usersMeta.total > usersMeta.per_page"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >

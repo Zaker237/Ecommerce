@@ -1,16 +1,16 @@
 import { ILink, IMeta} from "./commons";
 
 export interface IUser {
-	id?: | number;
-	name?: | string;
-  email?: | string;
-  created_at?: string;
+	id: number;
+	name: string;
+  email: string;
+  created_at: string;
 }
 
 export interface IUserLogin {
-  email: string | null;
-  password: string | null;
-  remember?: boolean
+  email: string;
+  password: string;
+  remember: boolean
 }
 
 export interface ILoginResponse {
@@ -41,10 +41,10 @@ export type GetUsersParams = {
 export type RootUserState = {
   users: IUser[];
   currentUser: IUser;
-  sIsAdmin?: true | null;
-  sToken: string | null;
-  links: ILink;
-  meta: IMeta;
+  sIsAdmin?: boolean;
+  sToken: string;
+  links: ILink | null;
+  meta: IMeta | null;
   loading: boolean,
   error: null | string
 };

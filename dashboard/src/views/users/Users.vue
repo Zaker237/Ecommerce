@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {computed, Ref, ref} from "vue";
+import { IUser } from "../../types/user";
 import { useUserStore } from "../../store/user.store";
 import UserModal from "./UserModal.vue";
 import UsersTable from "./UsersTable.vue";
@@ -7,23 +8,22 @@ import UsersTable from "./UsersTable.vue";
 const userStore = useUserStore();
 
 const DEFAULT_USER = {
-  id: '',
-  title: '',
-  description: '',
-  image: '',
-  price: ''
+  id: 0,
+  name: '',
+  email: '',
+  created_at: ''
 }
 
 const users = computed(() => userStore.items);
-const userModel = ref({...DEFAULT_USER})
+const userModel: Ref<IUser> = ref({...DEFAULT_USER})
 const showUserModal = ref(false);
 
 const showAddNewModal = () => {
   showUserModal.value = true
 }
 
-const editUser = (u) => {
-  userModel.value = u;
+const editUser = (user: IUser) => {
+  userModel.value = user;
   showAddNewModal();
 }
 

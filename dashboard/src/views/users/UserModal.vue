@@ -1,28 +1,31 @@
 <script setup lang="ts">
-import {computed, onUpdated, ref} from 'vue'
+import {computed, onUpdated, ref, Ref} from 'vue';
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
 //import {ExclamationIcon} from '@heroicons/vue/outline'
 //import {ExclamationCircleIcon} from '@heroicons/vue/outline'
+import { IUser } from "../../types/user";
 import CustomInput from "../../components/core/CustomInput.vue";
 import { useUserStore } from "../../store/user.store";
 import Spinner from "../../components/core/Spinner.vue";
 
 const userStore = useUserStore();
 
-const user = ref({
-  id: props.user.id,
-  name: props.user.name,
-  email: props.user.email,
-})
-
-const loading = ref(false)
 const props = defineProps({
   modelValue: Boolean,
   user: {
     required: true,
     type: Object,
   }
+});
+
+const user: Ref<IUser> = ref({
+  id: props.user.id,
+  name: props.user.name,
+  email: props.user.email,
+  created_at: props.user.created_at
 })
+
+const loading: Ref<boolean> = ref(false)
 
 const emit = defineEmits(['update:modelValue', 'close']);
 const show = computed({
@@ -35,6 +38,7 @@ onUpdated(() => {
     id: props.user.id,
     name: props.user.name,
     email: props.user.email,
+    created_at: props.user.created_at
   }
 })
 

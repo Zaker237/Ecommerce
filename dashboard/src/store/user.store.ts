@@ -18,10 +18,10 @@ export const useUserStore = defineStore({
   state: () => ({
 		users: [],
     sIsAdmin: true,
-    currentUser: {},
+    currentUser: {id:0, name: "", email: "", created_at: ""},
 		sToken: sessionStorage.getItem('TOKEN'),
-		links: [],
-  	meta: [],
+		links: null,
+  	meta: null,
     loading: false,
 		error: null
   } as RootUserState),
@@ -215,7 +215,7 @@ export const useUserStore = defineStore({
 					},
 				);
         this.sToken = "";
-        this.currentUser = {};
+        this.currentUser = {id:0, name: "", email: "", created_at: ""};
         sessionStorage.removeItem("TOKEN");
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
