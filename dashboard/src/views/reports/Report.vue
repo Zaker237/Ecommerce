@@ -12,6 +12,7 @@ const dateOptions = computed(() => reportStore.dateOptions);
 const chosenDate = ref('all');
 
 const onDatePickerChange = async () => {
+  if(!route.name) return
   await router.push({name: route.name, params: {date: chosenDate.value}})
 }
 </script>

@@ -15,7 +15,7 @@ watch(
 	}
 )
 const getData = async () => {
-  chartData.value = await reportStore.getOrdersReport(route.params.date);
+  chartData.value = await reportStore.getOrdersReport(String(route.params.date));
 }
 
 onMounted(async () => {
