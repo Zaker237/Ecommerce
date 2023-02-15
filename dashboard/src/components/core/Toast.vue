@@ -4,25 +4,27 @@ import {computed, ref, Ref, watch} from "vue";
 
 const toastsTore = useToastStore();
 
-let interval = null;
-let timeout = null;
+let interval:  number | undefined = undefined;
+let timeout: undefined | number = undefined;
 const percent: Ref<number> = ref(0)
-const toast = computed(() => toastsTore.message);
+const message = computed(() => toastsTore.message);
+const show = computed(() => toastsTore.show);
+const delay = computed(() => toastsTore.delay);
 
-watch(toastsTore.message, (newToast) => {
-  if (newToast.show) {
+watch(message, (newToast) => {
+  if (show) {
     if (interval) {
       clearInterval(interval);
-      interval = null;
+      interval = undefined;
     }
     if (timeout) {
       clearTimeout(timeout);
-      timeout = null;
+      timeout = undefined;
     }
     timeout = setTimeout(() => {
       close();
-      timeout = null;
-    }, toast.value.delay);
+      timeout = undefined;
+    }, delay.value);
     const startDate = Date.now();
     const futureDate = Date.now() + toastsTore.delay;
     interval = setInterval(() => {
@@ -30,7 +32,7 @@ watch(toastsTore.message, (newToast) => {
       percent.value = ((date - startDate) * 100) / (futureDate - startDate);
       if (percent.value >= 100) {
         clearInterval(interval);
-        interval = null;
+        interval = undefined;
       }
     }, 30);
   }
@@ -43,10 +45,10 @@ const close = () => {
 
 <template>
 	<div
-    v-show="toast.show"
+    v-show="show"
     class="fixed w-[400px] left-1/2 -ml-[200px] top-16 py-2 px-4 pb-4 bg-emerald-500 text-white"
   >
-    <div class="font-semibold">{{ toastStore.message }}</div>
+    <div class="font-semibold">{{ message }}</div>
     <button
       @click="close"
       class="absolute flex items-center justify-center right-2 top-2 w-[30px] h-[30px] rounded-full hover:bg-black/10 transition-colors"

@@ -7,8 +7,8 @@ export const useToastStore = defineStore({
 	id: "toast",
 	state: () => ({
 		stateShow: false,
-    stateMessage: '',
-    stateDelay: 5000
+		stateMessage: '',
+		stateDelay: 5000
 	} as RootToastState),
 
 	getters: {
