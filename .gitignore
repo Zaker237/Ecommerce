@@ -1,0 +1,5 @@
+# mysql config file
+.env.mysql
+
+# phpmyadmin config file
+.env.phpmyadmin
