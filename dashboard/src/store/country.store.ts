@@ -12,8 +12,8 @@ export const useCountryStore = defineStore({
 	id: "countries",
 	state: () => ({
 		countries: [],
-		links: [],
-  	meta: [],
+		links: null,
+  	meta: null,
 		loading: false,
 		error: null
 	} as RootCountryState),

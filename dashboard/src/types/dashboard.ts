@@ -5,6 +5,11 @@ export interface IDateOptions {
 	text: number;
 }
 
+export interface IChartItem {
+	name: string;
+	count: number;
+}
+
 export interface IOrder{
 	id: number;
   total_price: number;
@@ -27,20 +32,31 @@ export interface ILatestOrders {
 
 }
 
+export interface IChartDataItem {
+	label?: string;
+  backgroundColor?: string | string[];
+	data: number[];
+}
+
+export interface IChartData {
+	labels: string[];
+	datasets: IChartDataItem[];
+}
+
 export type RootDashboardState = {
-	customernumber: number;
-	productnumber: number;
-	paidOrdernumber: number;
-	totalIncomenumber: number;
+	customerNumber: number;
+	productNumber: number;
+	paidOrderNumber: number;
+	totalIncomeNumber: number;
 	orders: IOrder[];
-	countryOrders: IOrder[];
+	countryOrders: IChartItem[];
 	customers: ICustomer[];
 	customersCountLoading: boolean;
-  productsCountLoading: boolean;
-  paidOrdersLoading: boolean;
-  totalIncomeLoading: boolean;
-  ordersByCountryLoading: boolean;
-  latestCustomersLoading: boolean;
+	productsCountLoading: boolean;
+	paidOrdersLoading: boolean;
+	totalIncomeLoading: boolean;
+	ordersByCountryLoading: boolean;
+	latestCustomersLoading: boolean;
 	latestOrdersLoading: boolean;
 	error: null | string;
 };

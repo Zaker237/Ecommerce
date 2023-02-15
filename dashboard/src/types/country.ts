@@ -15,8 +15,8 @@ export type GetCountriesResponse = {
 
 export type RootCountryState = {
   countries: ICountry[];
-  links: ILink;
-  meta: IMeta;
+  links: ILink | null;
+  meta: IMeta | null;
   loading: boolean,
   error: null | string
 };

@@ -3,9 +3,10 @@ import {UserIcon} from '@heroicons/vue/24/outline'
 import DoughnutChart from '../components/core/charts/Doughnut.vue'
 import {onMounted, ref, Ref, computed} from "vue";
 import Spinner from "../components/core/Spinner.vue";
-import { IDateOptions } from "../types/dashboard";
-import { ICustomer } from "../types/customer";
-import { IOrder } from "../types/order";
+// import { IDateOptions } from "../types/dashboard";
+// import { ICustomer } from "../types/customer";
+import currencyUSD from "../filters/curency";
+import { IChartData } from "../types/dashboard";
 import CustomInput from "../components/core/CustomInput.vue";
 import { useDashboardStore } from "../store/dashboard.store";
 import { useReportStore } from "../store/report.store";
@@ -44,7 +45,7 @@ const updateDashboard = async () => {
 	await dashboardStore.getLatestCustomer(chosenDate.value);
 	await dashboardStore.getLastestOrder(chosenDate.value);
 	// build chart data
-	let chartData = {
+	let chartData: IChartData = {
     labels: [],
     datasets: [{
       backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
@@ -110,7 +111,7 @@ onMounted(async () => {
          style="animation-delay: 0.3s">
       <label class="text-lg font-semibold block mb-2">Total Income</label>
       <template v-if="!totalIncomeLoading">
-        <span class="text-3xl font-semibold">{{ totalIncome ? $filters.currencyUSD(totalIncome) : 0 }}</span>
+        <span class="text-3xl font-semibold">{{ totalIncome ? currencyUSD(totalIncome) : 0 }}</span>
       </template>
       <Spinner v-else text="" class=""/>
     </div>
@@ -137,7 +138,7 @@ onMounted(async () => {
           </p>
           <p class="flex justify-between">
             <span>{{ o.first_name }} {{ o.last_name }}</span>
-            <span>{{ $filters.currencyUSD(o.total_price) }}</span>
+            <span>{{ currencyUSD(o.total_price) }}</span>
           </p>
         </div>
       </template>
