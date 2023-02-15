@@ -6,7 +6,7 @@ COPY package.json .
 RUN npm install
 COPY . .
 # RUN npm install
-RUN npm build
+RUN npm run build
 
 # deploy stage
 FROM nginx:stable-alpine as deploy-stage
