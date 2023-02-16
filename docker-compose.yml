@@ -5,13 +5,8 @@ services:
     image: mysql:8.0
     container_name: shop-db
     restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ecommerce
-      MYSQL_ROOT_PASSWORD: ecommerce
-      MYSQL_PASSWORD: ecommerce
-      MYSQL_USER: ecommerce
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+    env_file:
+      - ./.env.mysql
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
     networks:
@@ -22,10 +17,8 @@ services:
     container_name: phpmyadmin
     links:
       - db
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
+    env_file:
+      - ./.env.phpmyadmin
     restart: always
     ports:
       - 8001:80
@@ -35,16 +28,15 @@ services:
   shop:
     build:
       args:
-        user: alex
+        user: username
         uid: 1000
       context: ./shop/
       dockerfile: Dockerfile
     image: shop-app
     container_name: shop-app
     restart: unless-stopped
-    working_dir: /var/www/
-    volumes:
-      - ./shop/:/var/www
+    # volumes:
+    #   - ./shop/:/var/www
     networks:
       - shop
 
@@ -55,7 +47,7 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      #- ./shop/:/var/www
       - ./nginx:/etc/nginx/conf.d
     networks:
       - shop

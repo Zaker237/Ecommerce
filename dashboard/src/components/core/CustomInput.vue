@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script setup>
 import { computed, ref } from "vue";
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const props = defineProps({
-  modelValue: [String, Number, File],
+  modelValue: [String, Number, Boolean, File],
   label: String,
   type: {
     type: String,
