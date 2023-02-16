@@ -1,56 +1,44 @@
-FROM php:8.1-fpm
+FROM composer:2.5 as build
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-  git \
-  curl \
-  libpng-dev \
-  libonig-dev \
-  libxml2-dev \
-  zip \
-  unzip
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Setup working directory
-WORKDIR /var/www/
-
-COPY . .
-
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+COPY . /app/
+WORKDIR /app
+RUN rm composer.lock
+RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
 # install node
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
-RUN bash nodesource_setup.sh
-RUN apt-get install -y nodejs
-RUN rm nodesource_setup.sh
+#RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+#RUN bash nodesource_setup.sh
+#RUN apt-get install -y nodejs
+#RUN rm nodesource_setup.sh
+RUN apk add --update nodejs npm
 
 # Install dependencies and build the app
 RUN npm install
 RUN npm run build
 
+
+FROM php:8.1-apache-buster as production
+
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+
+RUN docker-php-ext-configure opcache --enable-opcache && \
+  docker-php-ext-install pdo pdo_mysql
+
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+COPY --from=build /app /var/www/html
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY .env.prod /var/www/html/.env
+
 # Install composer
-#RUN rm composer.lock
+
 #RUN composer install
 
-RUN php artisan key:generate
+#RUN php artisan key:generate
 
-USER $user
-
-EXPOSE 9000
-
-CMD ["php-fpm"]
+RUN php artisan config:cache && \
+  php artisan route:cache && \
+  chmod 777 -R /var/www/html/storage/ && \
+  chown -R www-data:www-data /var/www/ && \
+  a2enmod rewrite
