@@ -2,22 +2,17 @@
 import { Bars3Icon, ArrowDownOnSquareIcon, UserIcon } from "@heroicons/vue/24/outline";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/24/solid";
-import { useRoute, useRouter } from "vue-router";
+import router from "../router";
 import { useUserStore } from "../store";
 
 const userStore = useUserStore();
-const router = useRouter();
 
 const logout = async () => {
-  try{
-    await userStore.logout();
-    await router.push({name: "app"});
-    console.log("logout");
+  const res = await userStore.logout();
+  if(res){
+    await router.push({ name: "login" });
   }
-  catch(error) {
-    console.log(error);
-  }
-}
+};
 </script>
 
 <template>

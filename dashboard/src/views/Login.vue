@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { LockClosedIcon } from "@heroicons/vue/24/solid";
 import GuestLayout from "../components/GuestLayout.vue";
 import { useUserStore } from "../store/user.store";
@@ -7,25 +7,21 @@ import router from "../router";
 
 const userStore = useUserStore();
 
-let loading = ref(false);
+let loading = computed(() => userStore.isloading);
 let errorMsg = ref("");
 const user = {
-    email: "",
-    password: "",
-    remember: false,
+  email: "",
+  password: "",
+  remember: false,
 };
 
-const login = () => {
-    loading.value = true;
-    userStore.login(user)
-        .then(() => {
-            loading.value = false;
-            router.push({ name: "app.dashboard" });
-        })
-        .catch(({ response }) => {
-            loading.value = false;
-            errorMsg.value = response.data.message;
-        });
+const login = async () => {
+  const res = await userStore.login(user);
+  if(res){
+    await router.push({ name: "app.dashboard" });
+  }else{
+    errorMsg.value = "Invalid Credential";
+  }
 };
 </script>
 

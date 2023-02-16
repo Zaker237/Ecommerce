@@ -1,13 +1,13 @@
 // @ts-check
 import { defineStore, acceptHMRUpdate } from "pinia";
 import {
-		IUser,
-		IUserLogin,
-		ILoginResponse,
-		RootUserState,
-		GetUsersParams,
-		GetUserResponse,
-		GetUsersResponse
+	IUser,
+	IUserLogin,
+	ILoginResponse,
+	RootUserState,
+	GetUsersParams,
+	GetUserResponse,
+	GetUsersResponse
 } from "../types/user";
 import axios from "axios";
 import { USERS_PER_PAGE } from "../constants";
@@ -30,7 +30,8 @@ export const useUserStore = defineStore({
 		items: (state) => state.users,
     user: (state) => state.currentUser,
     token: (state) => state.sToken,
-    isAdmin: (state) => state.sIsAdmin
+    isAdmin: (state) => state.sIsAdmin,
+		isloading: (state) => state.loading
   },
 
   actions: {
@@ -175,8 +176,9 @@ export const useUserStore = defineStore({
 			}
 		},
 
-    async login(user: IUserLogin) {
+    async login(user: IUserLogin): Promise<boolean> {
       this.loading = true;
+			let result: boolean = false;
 			try {
 				const { data, status } = await axios.post<ILoginResponse>(
           `${API_BASE_URL}/login`,
@@ -190,19 +192,23 @@ export const useUserStore = defineStore({
         this.sToken = data.token;
         this.currentUser = data.user;
         sessionStorage.setItem("TOKEN", data.token);
+				result = true;
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					this.error = error.message;
 				} else {
 					this.error = "An unexpected error occurred";
 				}
+				result = false;
 			} finally {
 				this.loading = false;
 			}
+			return result;
     },
 
-    async logout() {
+    async logout(): Promise<boolean> {
       this.loading = true;
+			let result: boolean = false;
 			try {
 				const { data, status } = await axios.post(
           `${API_BASE_URL}/logout`,
@@ -217,15 +223,18 @@ export const useUserStore = defineStore({
         this.sToken = "";
         this.currentUser = {id:0, name: "", email: "", created_at: ""};
         sessionStorage.removeItem("TOKEN");
+				result = true;
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					this.error = error.message;
 				} else {
 					this.error = "An unexpected error occurred";
 				}
+				result = false;
 			} finally {
 				this.loading = false;
 			}
+			return result;
     },
 
     async getCurrentUser() {
