@@ -3,3 +3,6 @@
 
 # phpmyadmin config file
 .env.phpmyadmin
+
+# docker compose file for prod
+docker-compose-prod.yaml
