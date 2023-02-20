@@ -78,13 +78,21 @@ export const useProductStore = defineStore({
 
 		async addItem(product: IProduct) {
 			this.loading = true;
+			const form = new FormData();
+			form.append('id', String(product.id));
+			form.append('title', product.title);
+			form.append('image', product.image);
+			form.append('description', product.description || "");
+			form.append('price', String(product.price));
+			form.append('published', product.published ? "1": "0");
+
 			try {
 				const { data, status } = await axios.post<IProduct>(
 					`${API_BASE_URL}/products`,
-					{...product},
+					form,
 					{
 						headers: {
-							"Content-Type": "application/json",
+							"Content-Type": "multipart/form-data",
 							"Authorization": `Bearer ${useUserStore().token}`
 						},
 
@@ -106,13 +114,21 @@ export const useProductStore = defineStore({
 
 		async updateItem(newProduct: IProduct) {
 			this.loading = true;
+			const form = new FormData();
+			form.append('id', String(newProduct.id));
+			form.append('title', newProduct.title);
+			form.append('image', newProduct.image);
+			form.append('description', newProduct.description || "");
+			form.append('price', String(newProduct.price));
+			form.append('published', newProduct.published ? "1" : "0");
+
 			try {
 				const { data, status } = await axios.put<IProduct>(
 					`${API_BASE_URL}/products/${newProduct.id}`,
-					{ ...newProduct },
+					form,
 					{
 						headers: {
-							"Content-Type": "application/json",
+							"Content-Type": "multipart/form-data",
 							"Authorization": `Bearer ${useUserStore().token}`
 						},
 					},
