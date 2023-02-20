@@ -1,10 +1,10 @@
 <script setup>
 import { computed, ref } from "vue";
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(["update", "change"]);
 
 const props = defineProps({
-  modelValue: [String, Number, Boolean, File],
+  modelValue: [String, Number, File],
   label: String,
   type: {
     type: String,
@@ -45,7 +45,7 @@ const inputClasses = computed(() => {
 });
 
 const onChange = (value) => {
-  emit('update:modelValue', value);
+  emit('update', value);
   emit('change', value);
 };
 </script>
@@ -75,7 +75,7 @@ const onChange = (value) => {
         :name="name"
         :required="required"
         :value="props.modelValue"
-        @input="emit('update:modelValue', $event.target.value)"
+        @input="emit('update', $event.target.value)"
         :class="inputClasses"
         :placeholder="label">
       </textarea>
@@ -98,7 +98,7 @@ const onChange = (value) => {
           :type="type"
           :checked="props.modelValue"
           :required="required"
-          @change="emit('update:modelValue', $event.target.checked)"
+          @change="emit('update', $event.target.checked)"
           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
         />
         <label :for="id" class="ml-2 block text-sm text-gray-900"> {{ label }} </label>
@@ -109,7 +109,7 @@ const onChange = (value) => {
           :name="name"
           :required="required"
           :value="props.modelValue"
-          @input="emit('update:modelValue', $event.target.value)"
+          @input="emit('update', $event.target.value)"
           :class="inputClasses"
           :placeholder="label"
           step="0.01"
