@@ -2,10 +2,10 @@
 import { computed, onUpdated, ref, Ref} from "vue";
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
 import { IProduct } from "../../types/product";
-// import { ExclamationIcon } from "@heroicons/vue/24/outline";
 import CustomInput from "../../components/core/CustomInput.vue";
 import { useProductStore } from "../../store/product.store";
 import Spinner from "../../components/core/Spinner.vue";
+import CustomChecked from "@/components/core/CustomChecked.vue";
 
 const productStore = useProductStore();
 
@@ -31,7 +31,7 @@ const product: Ref<IProduct> = ref({
   updated_at: props.product.updated_at
 });
 
-const loading = ref(false);
+const loading = computed(() => productStore.loading);
 
 const show = computed({
   get: () => props.modelValue,
@@ -127,13 +127,41 @@ const onSubmit = async () => {
                   </svg>
                 </button>
               </header>
-              <form @submit.prevent="onSubmit">
+              <form @submit.prevent="onSubmit" enctype="multipart/form-data">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput class="mb-2" v-model="product.title" label="Product Title"/>
-                  <CustomInput type="file" class="mb-2" label="Product Image" @change="file => product.image = file"/>
-                  <CustomInput type="textarea" class="mb-2" v-model="product.description" label="Description"/>
-                  <CustomInput type="number" class="mb-2" v-model="product.price" label="Price" prepend="$"/>
-                  <CustomInput type="checkbox" class="mb-2" v-model="product.published" label="Published"/>
+                  <CustomInput
+                    class="mb-2"
+                    :modelValue="product.title"
+                    label="Product Title"
+                    @update="title => product.title = title"
+                  />
+                  <CustomInput
+                    type="file"
+                    class="mb-2"
+                    label="Product Image"
+                    @change="file => product.image = file"
+                  />
+                  <CustomInput
+                    type="textarea"
+                    class="mb-2"
+                    :modelValue="product.description"
+                    label="Description"
+                    @update="description => product.description = description"
+                  />
+                  <CustomInput
+                    type="number"
+                    class="mb-2"
+                    :modelValue="product.price"
+                    label="Price"
+                    prepend="$"
+                    @update="price => product.price = price"
+                  />
+                  <CustomChecked
+                    class="mb-2"
+                    :modelValue="product.published"
+                    label="Published"
+                    @update="published => product.published = published"
+                  />
                 </div>
                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button

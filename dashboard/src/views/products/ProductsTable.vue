@@ -2,10 +2,9 @@
 import { computed, onMounted, ref, Ref } from "vue";
 import { useProductStore } from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
-// import ProductModal from "./ProductModal.vue";
 import TableHeaderCell from "../../components/core/table/TableHeaderCell.vue";
 import { IProduct } from "../../types/product";
-import { ILink, IMetaLink } from "../../types/commons";
+import { IMetaLink } from "../../types/commons";
 import { PRODUCTS_PER_PAGE } from "../../constants";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
@@ -20,7 +19,7 @@ const productsLoading = computed(() => productStore.loading);
 const productsMeta = computed(() => productStore.meta);
 const sortField: Ref<string> = ref('updated_at');
 const sortDirection: Ref<string> = ref("desc");
-const product = ref({});
+// const product = ref({});
 const showProductModal: Ref<boolean> = ref(false);
 const emit = defineEmits(["clickEdit"]);
 

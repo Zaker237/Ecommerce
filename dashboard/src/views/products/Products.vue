@@ -11,7 +11,7 @@ const DEFAULT_PRODUCT = {
   id: 0, title: "", slug: "", description: "",
   image: "", price: 0, published: false, created_at: "", updated_at: ""
 }
-const products = computed(() => productStore.products);
+
 const productModel: Ref<IProduct> = ref({...DEFAULT_PRODUCT})
 const showProductModal = ref(false);
 
@@ -20,7 +20,7 @@ onMounted(async () => {
 });
 
 const showAddNewModal = () => {
-  showProductModal.value = true
+  showProductModal.value = true;
 }
 
 const editProduct = async (product: IProduct) => {
@@ -28,10 +28,12 @@ const editProduct = async (product: IProduct) => {
   if(!data) return
   productModel.value = data;
   showAddNewModal();
+
 }
 
 const onModalClose = () => {
-  productModel.value = {...DEFAULT_PRODUCT}
+  productModel.value = {...DEFAULT_PRODUCT};
+  showProductModal.value = false;
 }
 </script>
 
