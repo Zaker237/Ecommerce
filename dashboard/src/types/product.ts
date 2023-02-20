@@ -4,8 +4,8 @@ export interface IProduct {
   id: number;
   title: string;
 	slug: string;
-	description?: string;
-  image?: string;
+	description: string;
+  image: string | Blob;
   price: number;
   published: boolean;
   created_at: string;
