@@ -39,6 +39,7 @@ const show = computed({
 });
 
 onUpdated(() => {
+  console.log(props.product);
   product.value = {
     id: props.product.id,
     title: props.product.title,
@@ -49,7 +50,9 @@ onUpdated(() => {
     published: props.product.published,
     created_at: props.product.created_at,
     updated_at: props.product.updated_at
-  }
+  };
+
+  console.log(product.value);
 });
 
 const closeModal = () => {
@@ -59,6 +62,7 @@ const closeModal = () => {
 
 const onSubmit = async () => {
   if (product.value.id) {
+    console.log(product.value);
     await productStore.updateItem(product.value);
     closeModal();
   } else {

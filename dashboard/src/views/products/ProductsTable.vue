@@ -23,8 +23,11 @@ const sortDirection: Ref<string> = ref("desc");
 const showProductModal: Ref<boolean> = ref(false);
 const emit = defineEmits(["clickEdit"]);
 
+const annim: Ref<boolean> = ref(true);
+const annimTrue = computed(() => annim.value);
+
 onMounted(() => {
-  productStore.getItems({});
+  getProducts();
 })
 
 const getForPage = (ev: any, link: IMetaLink) => {
@@ -44,6 +47,7 @@ const getProducts = (url = null) => {
     sort_field: sortField.value,
     sort_direction: sortDirection.value
   });
+  changeAnnim();
 }
 
 const sortProducts = (field: string) => {
@@ -75,8 +79,14 @@ const deleteProduct = (product: IProduct) => {
   }
 }
 
-const editProduct = (p: IProduct) => {
-  emit("clickEdit", p)
+const editProduct = (product: IProduct) => {
+  emit("clickEdit", product);
+}
+
+const changeAnnim = () => {
+  setTimeout(() => {
+    annim.value = false;
+  }, perPage.value * 100);
 }
 </script>
 
@@ -167,7 +177,8 @@ const editProduct = (p: IProduct) => {
       <tbody v-else>
       <tr
 				v-for="(product, index) of products"
-				class="animate-fade-in-down"
+				class=""
+        :class="{'animate-fade-in-down': annimTrue}"
         :style="{'animation-delay': (index * 0.1) + 's'}"
 			>
         <td class="border-b p-2 ">{{ product.id }}</td>
@@ -180,14 +191,14 @@ const editProduct = (p: IProduct) => {
         <td class="border-b p-2">
           ${{ product.price }}
         </td>
-        <td class="border-b p-2 ">
+        <td class="border-b p-2">
           {{ product.updated_at }}
         </td>
-        <td class="border-b p-2 ">
+        <td class="border-b p-2">
           <Menu as="div" class="relative inline-block text-left">
             <div>
               <MenuButton
-                class="inline-flex items-center justify-center w-full justify-center rounded-full w-10 h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                class="inline-flex items-center w-full justify-center rounded-full h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 <EllipsisVerticalIcon
                   class="h-5 w-5 text-indigo-500"
@@ -205,7 +216,7 @@ const editProduct = (p: IProduct) => {
               leave-to-class="transform scale-95 opacity-0"
             >
               <MenuItems
-                class="absolute z-10 right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="absolute right-0 mt-2 w-32 z-10 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               >
                 <div class="px-1 py-1">
                   <MenuItem v-slot="{ active }">
@@ -228,7 +239,7 @@ const editProduct = (p: IProduct) => {
                     <button
                       :class="[
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                        'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                        'group flex w-full items-center rounded-md px-2 py-2 text-sm z-100',
                       ]"
                       @click="deleteProduct(product)"
                     >
