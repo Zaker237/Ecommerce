@@ -114,18 +114,18 @@ export const useProductStore = defineStore({
 
 		async updateItem(newProduct: IProduct) {
 			this.loading = true;
-			const form = new FormData();
-			form.append('id', String(newProduct.id));
-			form.append('title', newProduct.title);
-			form.append('image', newProduct.image);
-			form.append('description', newProduct.description || "");
-			form.append('price', String(newProduct.price));
-			form.append('published', newProduct.published ? "1" : "0");
+			const prod = new FormData();
+			prod.append('id', String(newProduct.id));
+			prod.append('title', newProduct.title);
+			prod.append('image', newProduct.image);
+			prod.append('description', newProduct.description || "");
+			prod.append('price', String(newProduct.price));
+			prod.append('published', newProduct.published ? "1" : "0");
 
 			try {
 				const { data, status } = await axios.put<IProduct>(
 					`${API_BASE_URL}/products/${newProduct.id}`,
-					form,
+					prod,
 					{
 						headers: {
 							"Content-Type": "multipart/form-data",

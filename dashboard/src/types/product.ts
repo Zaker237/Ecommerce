@@ -5,7 +5,7 @@ export interface IProduct {
   title: string;
 	slug: string;
 	description: string;
-  image: string | Blob;
+  image: string;
   price: number;
   published: boolean;
   created_at: string;
