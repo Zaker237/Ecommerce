@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  db:
+  shop-db:
     image: mysql:8.0
     container_name: shop-db
     restart: unless-stopped
@@ -16,7 +16,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     links:
-      - db
+      - shop-db
     env_file:
       - ./.env.phpmyadmin
     restart: always
@@ -31,11 +31,10 @@ services:
       dockerfile: Dockerfile
     container_name: shop-app
     links:
-      - db
+      - shop-db
     restart: unless-stopped
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
+    env_file:
+      - ./shop/.env.prod
     ports:
       - "8000:80"
     networks:
